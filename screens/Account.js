@@ -1,15 +1,17 @@
 import * as React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import AccountOption from "../components/AccountOption";
 import WelcomeInfo from "../components/WelcomeInfo";
 import { Color } from "../GlobalStyles";
 
 const Account = () => {
   return (
-    <View style={styles.account}>
-      <WelcomeInfo />
-      <AccountOption />
-    </View>
+    <ScrollView>
+      <View style={styles.account}>
+        <WelcomeInfo />
+        <AccountOption />
+      </View>
+    </ScrollView>
   );
 };
 
