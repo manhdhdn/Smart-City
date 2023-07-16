@@ -1,74 +1,159 @@
 import * as React from "react";
-import { StyleSheet, View, Text } from "react-native";
-import SingleOption from "./SingleOption";
+
+import { StyleSheet, View, Text, Pressable } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import { FontFamily, Color } from "../GlobalStyles";
 
-const AccountOption = () => {
+const AccountOption = ({ navigation }) => {
+  const [userLogedIn, setUserLogedIn] = React.useState(true);
+
+  const handleNotificationPress = () => {
+    console.log("Notification");
+  }
+
+  const handleMyBookingsPress = () => {
+    navigation.navigate("Schedule");
+  }
+
+  const handleNewPlanPress = () => {
+    navigation.navigate("Home");
+  }
+
+  const handleAddressPress = () => {
+    console.log("Address");
+  }
+
+  const handleLogOutPress = () => {
+    navigation.navigate("SignIn");
+  }
+
+  const handleLogInPress = () => {
+    navigation.navigate("SignIn");
+  }
+
+  const logedIn = () => {
+    return (
+      <>
+        <Pressable style={styles.singleOption} onPress={handleNotificationPress}>
+          <View style={styles.optionContent}>
+            <MaterialCommunityIcons name="bell-ring-outline" size={24} color={Color.slateblue} />
+            <Text style={styles.text}>Notifications</Text>
+          </View>
+          <View style={styles.line} />
+        </Pressable>
+        <Pressable style={styles.singleOption} onPress={handleMyBookingsPress}>
+          <View style={styles.optionContent}>
+            <MaterialCommunityIcons name="calendar-month" size={24} color={Color.slateblue} />
+            <Text style={styles.text}>My Bookings</Text>
+          </View>
+          <View style={styles.line} />
+        </Pressable>
+        <Pressable style={styles.singleOption} onPress={handleNewPlanPress}>
+          <View style={styles.optionContent}>
+            <MaterialCommunityIcons name="notebook-multiple" size={24} color={Color.slateblue} />
+            <Text style={styles.text}>New Plan</Text>
+          </View>
+          <View style={styles.line} />
+        </Pressable>
+        <Pressable style={styles.singleOption} onPress={handleAddressPress}>
+          <View style={styles.optionContent}>
+            <MaterialCommunityIcons name="map-marker-outline" size={24} color={Color.slateblue} />
+            <Text style={styles.text}>Address</Text>
+          </View>
+          <View style={styles.line} />
+        </Pressable>
+        <View style={styles.logInOutFrame}>
+          <Pressable style={styles.logInOutRow} onPress={handleLogOutPress}>
+            <MaterialCommunityIcons name="logout" size={44} color={Color.slateblue} />
+            <Text style={styles.logInOutText}>Log out</Text>
+          </Pressable>
+        </View>
+      </>
+    );
+  }
+
+  const notLogedIn = () => {
+    return (
+      <View style={styles.logInOutFrame}>
+        <Pressable style={styles.logInOutRow} onPress={handleLogInPress}>
+          <MaterialCommunityIcons name="login" size={44} color={Color.slateblue} />
+          <Text style={styles.logInOutText}>Log in</Text>
+        </Pressable>
+      </View>
+    );
+  }
+
   return (
     <View style={[styles.accountoption, styles.optionsPosition]}>
-      <View style={[styles.options, styles.optionsPosition]}>
-        <SingleOption
-          addresses="Addresses"
-          address={require("../assets/address.png")}
-        />
-        <SingleOption
-          optionTop={116}
-          optionHeight={43}
-          line184Top={43}
-          addresses="My Plan"
-          address={require("../assets/myplan.png")}
-          addressTop={3}
-          addressHeight={18}
-          optionLeft={0}
-          addressesLeft={84}
-          addressLeft={30}
-          addressWidth={18}
-        />
-        <SingleOption
-          optionTop={55}
-          optionHeight={43}
-          line184Top={43}
-          addresses="My Bookings"
-          address={require("../assets/calendar.png")}
-          addressTop={5}
-          addressHeight={17}
-          optionLeft={0}
-          addressesLeft={84}
-          addressLeft={30}
-          addressWidth={18}
-        />
-        <SingleOption
-          optionTop={0}
-          optionHeight={42}
-          line184Top={42}
-          addresses="Notifications"
-          address={require("../assets/notification.png")}
-          addressTop={4}
-          addressHeight={18}
-          optionLeft={1}
-          addressesLeft={83}
-          addressLeft={28}
-          addressWidth={21}
-        />
-      </View>
       <Text style={styles.account}>Account</Text>
+      <View style={styles.options}>
+        {userLogedIn ? logedIn() : notLogedIn()}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  logInOutText: {
+    fontSize: 36,
+    letterSpacing: 0.2,
+    lineHeight: 44,
+    fontFamily: FontFamily.interRegular,
+    color: Color.darkslategray,
+    textAlign: "left",
+  },
+  logInOutRow: {
+    flexDirection: "row",
+  },
+  logInOutFrame: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  singleOption: {
+    flexDirection: "column",
+    gap: 20,
+    width: '90%',
+    height: 60,
+    justifyContent: "center",
+  },
+  optionContent: {
+    flexDirection: "row",
+    gap: 30,
+    marginLeft: 20,
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 16,
+    letterSpacing: 0.2,
+    lineHeight: 24,
+    fontFamily: FontFamily.interRegular,
+    color: Color.darkslategray,
+    textAlign: "left",
+  },
+  line: {
+    borderStyle: "solid",
+    borderColor: "#707070",
+    borderTopWidth: 0.6,
+    width: "100%",
+    height: 1,
+    opacity: 0.2,
+  },
   optionsPosition: {
     position: "absolute",
   },
   options: {
     top: 93,
-    width: 374,
-    height: 220,
+    width: "100%",
+    height: "75%",
+    alignItems: "center",
   },
   account: {
     top: 36,
     left: 29,
-    fontSize: 16,
+    fontSize: 18,
     letterSpacing: 0.2,
     lineHeight: 26,
     fontFamily: FontFamily.interRegular,
@@ -83,7 +168,6 @@ const styles = StyleSheet.create({
     backgroundColor: Color.white,
     width: "100%",
     height: 600,
-    alignItems: "center",
   },
 });
 

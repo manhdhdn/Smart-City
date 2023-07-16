@@ -1,19 +1,17 @@
 import * as React from "react";
 import { StyleSheet, View, ScrollView, Text } from "react-native";
 import ScheduleDetail from "../components/ScheduleDetail";
-import SlectedTime from "../components/SlectedTime";
+import ScheduleTime from "../components/ScheduleTime";
 import { FontFamily, Color } from "../GlobalStyles";
 
 const Schedule = () => {
   return (
     <ScrollView>
       <View style={styles.schedule}>
-        <Text style={[styles.cleanerCalendar, styles.scheduletimePosition]}>
+        <Text style={styles.cleanerCalendar}>
           Cleaner Calendar
         </Text>
-        <View style={[styles.scheduletime, styles.scheduletimePosition]}>
-          <SlectedTime />
-        </View>
+        <ScheduleTime />
         <ScheduleDetail />
       </View>
     </ScrollView>
@@ -21,15 +19,8 @@ const Schedule = () => {
 };
 
 const styles = StyleSheet.create({
-  scheduletimePosition: {
-    top: 41,
-    position: "absolute",
-  },
-  scheduletime: {
-    width: 304,
-    height: 171,
-  },
   cleanerCalendar: {
+    marginTop: 23,
     fontSize: 16,
     fontWeight: "700",
     fontFamily: FontFamily.ubuntuBold,
@@ -37,10 +28,9 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   schedule: {
-    backgroundColor: Color.slateblue,
     flex: 1,
-    width: "100%",
-    height: 804,
+    flexDirection: "column",
+    backgroundColor: Color.slateblue,
     alignItems: "center",
   },
 });

@@ -9,7 +9,7 @@ const NextSplash = ({ navigation }) => {
     navigation.navigate("Splash");
   }
   const handleButtonNextPress = () => {
-    navigation.navigate("Home");
+    navigation.navigate("SignUp");
   }
 
   return (

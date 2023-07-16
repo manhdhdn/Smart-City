@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import { StyleSheet, Text, View } from "react-native";
 import { Color, FontFamily } from "../GlobalStyles";
 
-const SlectedTime = () => {
+const ScheduleTime = () => {
   return (
     <View style={[styles.slectedtime, styles.detailPosition]}>
       <View style={[styles.detail, styles.detailPosition]}>
@@ -48,8 +48,6 @@ const styles = StyleSheet.create({
   detailPosition: {
     overflow: "hidden",
     width: 304,
-    left: 0,
-    position: "absolute",
   },
   sTypo: {
     textAlign: "left",
@@ -199,9 +197,9 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   slectedtime: {
+    marginTop: 25,
     height: 137,
-    top: 45,
   },
 });
 
-export default SlectedTime;
+export default ScheduleTime;

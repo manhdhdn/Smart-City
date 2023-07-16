@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import AsyncStorage, { AsyncStorageStatic } from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
@@ -11,6 +11,8 @@ import Account from "./screens/Account";
 import Splash from "./screens/Splash";
 import Schedule from "./screens/Schedule";
 import NextSplash from "./screens/NextSplash";
+import SignUp from "./screens/SignUp";
+import SignIn from "./screens/SignIn";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -62,9 +64,11 @@ const AccountStack = () => {
       initialRouteName="Account"
       screenOptions={{ headerShown: true, headerTitleAlign: "center" }}
     >
+      <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Schedule" component={Schedule} />
-      <Stack.Screen name="Account" component={Account} />
+      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="SignIn" component={SignIn} />
     </Stack.Navigator>
   )
 }
@@ -111,14 +115,17 @@ const BottomTab = () => {
 const App = () => {
   const [isFirstRun, setFirstRun] = useState(null);
   const [fontsLoaded, error] = useFonts({
+    Poppins_regular: require("./assets/fonts/Poppins_regular.ttf"),
+    Poppins_medium: require("./assets/fonts/Poppins_medium.ttf"),
+    Poppins_bold: require("./assets/fonts/Poppins_bold.ttf"),
+    Ubuntu_regular: require("./assets/fonts/Ubuntu_regular.ttf"),
+    Ubuntu_bold: require("./assets/fonts/Ubuntu_bold.ttf"),
+    Inter_regular: require("./assets/fonts/Inter_regular.ttf"),
     Montserrat_medium: require("./assets/fonts/Montserrat_medium.ttf"),
     Montserrat_semibold: require("./assets/fonts/Montserrat_semibold.ttf"),
     Montserrat_bold: require("./assets/fonts/Montserrat_bold.ttf"),
-    Ubuntu_regular: require("./assets/fonts/Ubuntu_regular.ttf"),
-    Ubuntu_bold: require("./assets/fonts/Ubuntu_bold.ttf"),
     "Nunito Sans_regular": require("./assets/fonts/Nunito_Sans_regular.ttf"),
     "Nunito Sans_bold": require("./assets/fonts/Nunito_Sans_bold.ttf"),
-    Inter_regular: require("./assets/fonts/Inter_regular.ttf"),
     Nunito_regular: require("./assets/fonts/Nunito_regular.ttf"),
   });
 
