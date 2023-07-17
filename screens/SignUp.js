@@ -1,9 +1,17 @@
 import * as React from "react";
-import { Text, StyleSheet, View, Pressable } from "react-native";
+import { Text, TextInput, StyleSheet, View, Pressable, ScrollView } from "react-native";
 import { Image } from "expo-image";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
 const SignUp = ({ navigation }) => {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [hidePassword, setHidePassword] = React.useState(true);
+
+  const handleUnhidePassword = () => {
+    setHidePassword(!hidePassword);
+  }
+
   const handleLoginLinkPress = () => {
     navigation.navigate("SignIn");
   }
@@ -21,69 +29,81 @@ const SignUp = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.signin}>
-      <View style={[styles.content, styles.buttonPosition]}>
-        <Text style={[styles.email, styles.emailTypo]}>Email</Text>
-        <View style={[styles.groupView, styles.groupLayout]}>
-          <View style={styles.groupInnerShadowBox} />
-          <Image
-            style={[styles.eyeLightIcon, styles.parentPosition]}
-            contentFit="cover"
-            source={require("../assets/expand-down.png")}
-          />
-          <Text style={[styles.votremailgmailcom, styles.textTypo]}>
-            votremail@gmail.com
-          </Text>
-        </View>
-        <Text style={[styles.password, styles.emailTypo]}>Password</Text>
-        <View style={[styles.rectangleContainer, styles.groupLayout]}>
-          <View style={styles.groupInnerShadowBox} />
-          <Image
-            style={[styles.eyeLightIcon, styles.parentPosition]}
-            contentFit="cover"
-            source={require("../assets/eye-light1.png")}
-          />
-          <Text style={[styles.text, styles.textTypo]}>***************</Text>
-        </View>
-        <Pressable style={[styles.button, styles.buttonPosition]} onPress={handleRegisterPress}>
-          <View style={styles.rectangle} />
-          <Text style={styles.createAccount}>Register</Text>
-        </Pressable>
-        <Text style={styles.orLoginWith}>or Register with</Text>
-        <Pressable style={[styles.rectangleGroup, styles.groupLayout]} onPress={handleGoogleRegisterPress}>
-          <View style={[styles.groupItem, styles.groupLayout]} />
-          <View style={[styles.googleParent, styles.parentPosition]}>
-            <Text style={[styles.google, styles.googleTypo]}>Google</Text>
+    <ScrollView>
+      <View style={styles.signin}>
+        <View style={[styles.content, styles.buttonPosition]}>
+          <Text style={[styles.email, styles.emailTypo]}>Email</Text>
+          <View style={[styles.groupView, styles.groupLayout]}>
+            <View style={styles.groupInnerShadowBox} />
+            <TextInput
+              style={styles.textTypo}
+              onChangeText={setEmail}
+              placeholder="smartcity@gmail.com"
+              keyboardType="email-address"
+            />
             <Image
-              style={[
-                styles.googleLogoPngSuiteEverythiIcon1,
-                styles.googleIconPosition,
-              ]}
+              style={[styles.eyeLightIcon, styles.parentPosition]}
               contentFit="cover"
-              source={require("../assets/googlelogopngsuiteeverythingyouneedknowaboutgooglenewest0removebgpreview-11.png")}
+              source={require("../assets/expand-down.png")}
             />
           </View>
-        </Pressable>
-        <Pressable style={[styles.rectangleParent, styles.groupLayout]} onPress={handleFacebookRegisterPress}>
-          <View style={[styles.groupChild, styles.groupLayout]} />
-          <View style={[styles.facebookParent, styles.parentPosition]}>
-            <Text style={[styles.facebook, styles.googleTypo]}>Facebook</Text>
-            <Image
-              style={[
-                styles.googleLogoPngSuiteEverythiIcon,
-                styles.googleIconPosition,
-              ]}
-              contentFit="cover"
-              source={require("../assets/googlelogopngsuiteeverythingyouneedknowaboutgooglenewest0removebgpreview-1.png")}
+          <Text style={[styles.password, styles.emailTypo]}>Password</Text>
+          <View style={[styles.rectangleContainer, styles.groupLayout]}>
+            <View style={styles.groupInnerShadowBox} />
+            <TextInput
+              style={styles.textTypo}
+              onChangeText={setPassword}
+              placeholder="enter your password"
+              secureTextEntry={hidePassword}
             />
+            <Pressable onPress={handleUnhidePassword}>
+              <Image
+                style={[styles.eyeLightIcon, styles.parentPosition]}
+                contentFit="cover"
+                source={require("../assets/eye-light1.png")}
+              />
+            </Pressable>
           </View>
-        </Pressable>
-        <Pressable style={styles.doseNotHaveContainer} onPress={handleLoginLinkPress}>
-          <Text style={[styles.doseNotHave, styles.textStyle]}>Have an account yet?</Text>
-          <Text style={[styles.register, styles.textStyle]}>Login</Text>
-        </Pressable>
+          <Pressable style={[styles.button, styles.buttonPosition]} onPress={handleRegisterPress}>
+            <View style={styles.rectangle} />
+            <Text style={styles.createAccount}>Register</Text>
+          </Pressable>
+          <Text style={styles.orLoginWith}>or Register with</Text>
+          <Pressable style={[styles.rectangleGroup, styles.groupLayout]} onPress={handleGoogleRegisterPress}>
+            <View style={[styles.groupItem, styles.groupLayout]} />
+            <View style={[styles.googleParent, styles.parentPosition]}>
+              <Text style={[styles.google, styles.googleTypo]}>Google</Text>
+              <Image
+                style={[
+                  styles.googleLogoPngSuiteEverythiIcon1,
+                  styles.googleIconPosition,
+                ]}
+                contentFit="cover"
+                source={require("../assets/googlelogopngsuiteeverythingyouneedknowaboutgooglenewest0removebgpreview-11.png")}
+              />
+            </View>
+          </Pressable>
+          <Pressable style={[styles.rectangleParent, styles.groupLayout]} onPress={handleFacebookRegisterPress}>
+            <View style={[styles.groupChild, styles.groupLayout]} />
+            <View style={[styles.facebookParent, styles.parentPosition]}>
+              <Text style={[styles.facebook, styles.googleTypo]}>Facebook</Text>
+              <Image
+                style={[
+                  styles.googleLogoPngSuiteEverythiIcon,
+                  styles.googleIconPosition,
+                ]}
+                contentFit="cover"
+                source={require("../assets/googlelogopngsuiteeverythingyouneedknowaboutgooglenewest0removebgpreview-1.png")}
+              />
+            </View>
+          </Pressable>
+          <Pressable style={styles.doseNotHaveContainer} onPress={handleLoginLinkPress}>
+            <Text style={[styles.doseNotHave, styles.textStyle]}>Have an account yet?</Text>
+            <Text style={[styles.register, styles.textStyle]}>Login</Text>
+          </Pressable>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -127,6 +147,7 @@ const styles = StyleSheet.create({
     top: 15,
     left: 18,
     height: 23,
+    width: "100%",
     textAlign: "left",
     position: "absolute",
   },
@@ -290,7 +311,7 @@ const styles = StyleSheet.create({
   },
   signin: {
     backgroundColor: Color.gray_100,
-    flex: 1,
+    height: 780,
     alignItems: "center",
     justifyContent: "center",
   },

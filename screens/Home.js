@@ -20,27 +20,27 @@ const Home = () => {
     setServices([
       {
         id: 0,
-        name: "Organizing",
+        name: "1",
       },
       {
         id: 1,
-        name: "Organizing",
+        name: "2",
       },
       {
         id: 2,
-        name: "Organizing",
+        name: "3",
       },
       {
         id: 3,
-        name: "Organizing",
+        name: "4",
       },
       {
         id: 4,
-        name: "Organizing",
+        name: "5",
       },
       {
         id: 5,
-        name: "Organizing",
+        name: "6",
       }
     ])
   }, []);
