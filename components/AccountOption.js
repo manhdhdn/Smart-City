@@ -4,9 +4,14 @@ import { StyleSheet, View, Text, Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { FontFamily, Color } from "../GlobalStyles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/core";
+
+
 
 const AccountOption = ({ navigation }) => {
   const [userLogedIn, setUserLogedIn] = React.useState(true);
+  const checkLogin =  AsyncStorage.getItem("token");
 
   const handleNotificationPress = () => {
     console.log("Notification");
@@ -24,7 +29,8 @@ const AccountOption = ({ navigation }) => {
     console.log("Address");
   }
 
-  const handleLogOutPress = () => {
+  const handleLogOutPress = async ()  => {
+    await AsyncStorage.clear();
     navigation.navigate("SignIn");
   }
 
@@ -34,15 +40,14 @@ const AccountOption = ({ navigation }) => {
 
   const logedIn = () => {
     return (
-      <>
-        <Pressable style={styles.singleOption} onPress={handleNotificationPress}>
-          <View style={styles.optionContent}>
-            <MaterialCommunityIcons name="bell-ring-outline" size={24} color={Color.slateblue} />
-            <Text style={styles.text}>Notifications</Text>
-          </View>
-          <View style={styles.line} />
-        </Pressable>
-        <Pressable style={styles.singleOption} onPress={handleMyBookingsPress}>
+      <><Pressable style={styles.singleOption} onPress={handleNotificationPress}>
+        <View style={styles.optionContent}>
+          <MaterialCommunityIcons name="bell-ring-outline" size={24} color={Color.slateblue} />
+          <Text style={styles.text}>Notifications</Text>
+        </View>
+        <View style={styles.line} />
+      </Pressable>
+      <Pressable style={styles.singleOption} onPress={handleMyBookingsPress}>
           <View style={styles.optionContent}>
             <MaterialCommunityIcons name="calendar-month" size={24} color={Color.slateblue} />
             <Text style={styles.text}>My Bookings</Text>
@@ -68,7 +73,7 @@ const AccountOption = ({ navigation }) => {
             <MaterialCommunityIcons name="logout" size={44} color={Color.slateblue} />
             <Text style={styles.logInOutText}>Log out</Text>
           </Pressable>
-        </View>
+        </View> 
       </>
     );
   }

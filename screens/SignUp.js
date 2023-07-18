@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
 const SignUp = ({ navigation }) => {
-  const [email, setEmail] = React.useState("");
+  const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [hidePassword, setHidePassword] = React.useState(true);
 
@@ -32,13 +32,13 @@ const SignUp = ({ navigation }) => {
     <ScrollView>
       <View style={styles.signin}>
         <View style={[styles.content, styles.buttonPosition]}>
-          <Text style={[styles.email, styles.emailTypo]}>Email</Text>
+          <Text style={[styles.email, styles.emailTypo]}>Username</Text>
           <View style={[styles.groupView, styles.groupLayout]}>
             <View style={styles.groupInnerShadowBox} />
             <TextInput
               style={styles.textTypo}
-              onChangeText={setEmail}
-              placeholder="smartcity@gmail.com"
+              onChangeText={setUsername}
+              placeholder="minhtbse151276"
               keyboardType="email-address"
             />
             <Image

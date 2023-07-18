@@ -2,9 +2,11 @@ import * as React from "react";
 import { TextInput, Text, StyleSheet, View, Pressable, ScrollView } from "react-native";
 import { Image } from "expo-image";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignIn = ({ navigation }) => {
-    const [email, setEmail] = React.useState("");
+    const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [hidePassword, setHidePassword] = React.useState(true);
 
@@ -16,8 +18,36 @@ const SignIn = ({ navigation }) => {
         navigation.navigate("SignUp");
     }
 
-    const handleLogInPress = () => {
-        navigation.navigate("Account");
+    const handleLogInPress = async () => {
+        console.log("Login2");
+        try {
+            const data = await axios.post(`http://192.168.1.178:8089/api/signIn`,
+            { 
+            username: username,
+            password: password
+          })
+          console.log(data.data);
+          await AsyncStorage.setItem("token", data.data.token)
+          await AsyncStorage.setItem("user",JSON.stringify({
+            id: data.data.user._id,
+            image: data.data.user.image,
+            email: data.data.user.email,
+            name: data.data.user.name,
+            role: data.data.user.role[0],
+            isLogin: true
+          }))
+          if(data.data.user.role[0] === "user") {
+            console.log("zo");   
+            navigation.navigate("Home")
+            return
+          }
+          } catch (error) {
+            console.log(error);
+            // Xử lý lỗi khi đăng nhập thất bại
+            if(error.response && error.response.data){
+              console.error(error.response.data);
+            }
+          }
     }
 
     const handleGoogleLoginPress = () => {
@@ -32,12 +62,12 @@ const SignIn = ({ navigation }) => {
         <ScrollView>
             <View style={styles.signin}>
                 <View style={[styles.content, styles.buttonPosition]}>
-                    <Text style={[styles.email, styles.emailTypo]}>Email</Text>
+                    <Text style={[styles.email, styles.emailTypo]}>Username</Text>
                     <View style={[styles.groupView, styles.groupLayout]}>
                         <View style={styles.groupInnerShadowBox} />
                         <TextInput
                             style={styles.textTypo}
-                            onChangeText={setEmail}
+                            onChangeText={setUsername}
                             placeholder="smartcity@gmail.com"
                             keyboardType="email-address"
                         />
