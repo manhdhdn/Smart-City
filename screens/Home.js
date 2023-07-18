@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import { StyleSheet, View, ScrollView, Text, Pressable } from "react-native";
 import { Image } from "expo-image";
 import SelectedOption from "../components/SelectedOption";
 import SelectedCleaning from "../components/SelectedCleaning";
@@ -8,7 +8,7 @@ import SelectedService from "../components/SelectedService";
 import SelectedTime from "../components/SelectedTime";
 import { Color, FontFamily, FontSize } from "../GlobalStyles";
 
-const Home = () => {
+const Home = ({ navigation}) => {
   const [selectedCleaning, setSelectedCleaning] = React.useState(0);
   const [selectedService, setSelectedService] = React.useState(0);
   const [selectedOption, setSelectedOption] = React.useState(0);
@@ -74,6 +74,10 @@ const Home = () => {
     ])
   }, []);
 
+  const handleBookNowPress = () => {
+    navigation.navigate("Payment");
+  }
+
   const handleCleaningChange = (id) => {
     setSelectedCleaning(id);
   }
@@ -117,9 +121,9 @@ const Home = () => {
           <SelectedService services={services} selectedService={selectedService} handleServiceChange={handleServiceChange} />
           <SelectedOption options={options} selectedOption={selectedOption} handleOptionChange={handleOptionChange} />
           <SelectedTime />
-          <View style={[styles.badge, styles.badgeFlexBox]}>
+          <Pressable style={[styles.badge, styles.badgeFlexBox]} onPress={handleBookNowPress}>
             <Text style={[styles.labelText, styles.am9Typo]}>Book Now</Text>
-          </View>
+          </Pressable>
         </View>
       </View>
     </ScrollView>

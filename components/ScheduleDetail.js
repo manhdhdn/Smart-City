@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import { StyleSheet, View, Text } from "react-native";
 import { Color, FontFamily } from "../GlobalStyles";
 
-const ScheduleDetail = () => {
+const ScheduleDetail = (props) => {
   const paid = () => {
     return (
       <Image
@@ -22,7 +22,7 @@ const ScheduleDetail = () => {
 
   return (
     <View style={styles.scheduledetail}>
-      <Text style={[styles.date, styles.amTypo]}>18 April 2019</Text>
+      <Text style={[styles.date, styles.amTypo]}>{props.date}</Text>
       <View style={styles.planLayout}>
         <View style={[styles.cleaner, styles.cleanerLayout]}>
           {paid()}
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 36,
     backgroundColor: Color.white,
     width: "100%",
-    minHeight: 532,
+    minHeight: 550,
     alignItems: "center",
   },
 });

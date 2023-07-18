@@ -5,14 +5,20 @@ import ScheduleTime from "../components/ScheduleTime";
 import { FontFamily, Color } from "../GlobalStyles";
 
 const Schedule = () => {
+  const [date, setDate] = React.useState((new Date()).toISOString());
+
+  const handleSelectTime = (date) => {
+    setDate(date);
+  }
+
   return (
     <ScrollView>
       <View style={styles.schedule}>
         <Text style={styles.cleanerCalendar}>
           Cleaner Calendar
         </Text>
-        <ScheduleTime />
-        <ScheduleDetail />
+        <ScheduleTime date={date} handleSelectTime={handleSelectTime} />
+        <ScheduleDetail date={date} />
       </View>
     </ScrollView>
   );
