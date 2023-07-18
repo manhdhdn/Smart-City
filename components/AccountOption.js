@@ -10,9 +10,7 @@ import { useIsFocused } from "@react-navigation/core";
 
 
 const AccountOption = ({ navigation }) => {
-  const [userLogedIn, setUserLogedIn] = React.useState(true);
-  const checkLogin =  AsyncStorage.getItem("token");
-
+  const [userLogedIn, setUserLogedIn] = React.useState(false);
   const handleNotificationPress = () => {
     console.log("Notification");
   }
@@ -31,10 +29,12 @@ const AccountOption = ({ navigation }) => {
 
   const handleLogOutPress = async ()  => {
     await AsyncStorage.clear();
+    setUserLogedIn(false);
     navigation.navigate("SignIn");
   }
 
   const handleLogInPress = () => {
+    setUserLogedIn(true);
     navigation.navigate("SignIn");
   }
 
