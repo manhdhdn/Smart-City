@@ -7,32 +7,9 @@ const PaymentMethod = () => {
   return (
     <View style={styles.paymentMethod}>
       <View style={styles.detail}>
-        <View style={styles.badge}>
-          <Text style={styles.labelText}>Pay now</Text>
-        </View>
-        <View style={[styles.detailChild, styles.optionsPosition]} />
         <Text style={[styles.detail1, styles.text1FlexBox]}>Detail</Text>
+        <View style={styles.detailChild} />
         <View style={[styles.options, styles.optionsPosition]}>
-          <View style={[styles.option, styles.optionLayout1]}>
-            <View style={[styles.optionChild, styles.optionLayout]} />
-            <Text style={[styles.total, styles.totalTypo]}>Total:</Text>
-            <Text style={[styles.text, styles.textTypo]}>10$</Text>
-            <Image
-              style={[styles.myplanIcon, styles.iconPosition]}
-              contentFit="cover"
-              source={require("../assets/myplan.png")}
-            />
-          </View>
-          <View style={[styles.option1, styles.optionLayout1]}>
-            <View style={[styles.optionItem, styles.optionLayout]} />
-            <Text style={[styles.option2, styles.totalTypo]}>Option:</Text>
-            <Text style={[styles.option3, styles.textTypo]}>Option</Text>
-            <Image
-              style={[styles.calendarIcon, styles.iconPosition]}
-              contentFit="cover"
-              source={require("../assets/calendar.png")}
-            />
-          </View>
           <View style={[styles.option4, styles.optionLayout1]}>
             <View style={[styles.optionInner, styles.optionLayout]} />
             <Text style={[styles.service, styles.totalTypo]}>Service:</Text>
@@ -45,14 +22,30 @@ const PaymentMethod = () => {
               source={require("../assets/notification.png")}
             />
           </View>
+          <View style={[styles.option1, styles.optionLayout1]}>
+            <View style={[styles.optionItem, styles.optionLayout]} />
+            <Text style={[styles.option2, styles.totalTypo]}>Option:</Text>
+            <Text style={[styles.option3, styles.textTypo]}>Option</Text>
+            <Image
+              style={[styles.calendarIcon, styles.iconPosition]}
+              contentFit="cover"
+              source={require("../assets/calendar.png")}
+            />
+          </View>
+          <View style={[styles.option, styles.optionLayout1]}>
+            <View style={[styles.optionChild, styles.optionLayout]} />
+            <Text style={[styles.total, styles.totalTypo]}>Total:</Text>
+            <Text style={[styles.text, styles.textTypo]}>10$</Text>
+            <Image
+              style={[styles.myplanIcon, styles.iconPosition]}
+              contentFit="cover"
+              source={require("../assets/myplan.png")}
+            />
+          </View>
         </View>
-      </View>
-      <View style={styles.rectangleParent}>
-        <View style={[styles.groupChild, styles.groupLayout1]} />
-        <View style={[styles.groupItem, styles.groupLayout1]} />
-        <View style={[styles.groupInner, styles.groupLayout1]} />
-        <View style={[styles.rectangleView, styles.groupChild1Layout]} />
-        <View style={[styles.groupChild1, styles.groupChild1Layout]} />
+        <View style={styles.badge}>
+          <Text style={styles.labelText}>Pay now</Text>
+        </View>
       </View>
       <View style={[styles.rectangleGroup, styles.groupLayout]}>
         <View style={[styles.groupChild2, styles.groupLayout]} />
@@ -81,7 +74,6 @@ const PaymentMethod = () => {
 
 const styles = StyleSheet.create({
   optionsPosition: {
-    left: 4,
     position: "absolute",
   },
   text1FlexBox: {
@@ -124,24 +116,9 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     position: "absolute",
   },
-  groupLayout1: {
-    width: 75,
-    backgroundColor: Color.silver,
-    height: 28,
-    top: 0,
-    position: "absolute",
-  },
-  groupChild1Layout: {
-    backgroundColor: Color.gray8,
-    width: 75,
-    height: 28,
-    top: 0,
-    position: "absolute",
-  },
   groupLayout: {
     height: 183,
     width: 311,
-    position: "absolute",
   },
   parentLayout: {
     width: 264,
@@ -281,32 +258,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 38,
     backgroundColor: Color.slateblue,
     height: 463,
-    width: 375,
+    width: "100%",
     left: 0,
     position: "absolute",
-  },
-  groupChild: {
-    left: 0,
-  },
-  groupItem: {
-    left: 150,
-  },
-  groupInner: {
-    left: 300,
-  },
-  rectangleView: {
-    left: 75,
-  },
-  groupChild1: {
-    left: 225,
-  },
-  rectangleParent: {
-    top: 777,
-    display: "none",
-    height: 28,
-    width: 375,
-    left: 0,
-    position: "absolute",
+    alignItems: "center",
   },
   groupChild2: {
     borderRadius: Border.br_5xl,
@@ -360,13 +315,13 @@ const styles = StyleSheet.create({
   },
   rectangleGroup: {
     top: 126,
-    left: 28,
   },
   paymentMethod: {
     flex: 1,
     width: "100%",
     height: 812,
     backgroundColor: Color.white,
+    alignItems: "center",
   },
 });
 
