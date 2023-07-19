@@ -1,74 +1,76 @@
 import * as React from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, ScrollView } from "react-native";
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
 
 const PaymentMethod = () => {
   return (
-    <View style={styles.paymentMethod}>
-      <View style={styles.detail}>
-        <Text style={[styles.detail1, styles.text1FlexBox]}>Detail</Text>
-        <View style={styles.detailChild} />
-        <View style={[styles.options, styles.optionsPosition]}>
-          <View style={[styles.option4, styles.optionLayout1]}>
-            <View style={[styles.optionInner, styles.optionLayout]} />
-            <Text style={[styles.service, styles.totalTypo]}>Service:</Text>
-            <Text
-              style={[styles.insideFridge, styles.textTypo]}
-            >{`Inside Fridge `}</Text>
-            <Image
-              style={[styles.notificationIcon, styles.iconPosition]}
-              contentFit="cover"
-              source={require("../assets/notification.png")}
-            />
-          </View>
-          <View style={[styles.option1, styles.optionLayout1]}>
-            <View style={[styles.optionItem, styles.optionLayout]} />
-            <Text style={[styles.option2, styles.totalTypo]}>Option:</Text>
-            <Text style={[styles.option3, styles.textTypo]}>Option</Text>
-            <Image
-              style={[styles.calendarIcon, styles.iconPosition]}
-              contentFit="cover"
-              source={require("../assets/calendar.png")}
-            />
-          </View>
-          <View style={[styles.option, styles.optionLayout1]}>
-            <View style={[styles.optionChild, styles.optionLayout]} />
-            <Text style={[styles.total, styles.totalTypo]}>Total:</Text>
-            <Text style={[styles.text, styles.textTypo]}>10$</Text>
-            <Image
-              style={[styles.myplanIcon, styles.iconPosition]}
-              contentFit="cover"
-              source={require("../assets/myplan.png")}
-            />
-          </View>
-        </View>
-        <View style={styles.badge}>
-          <Text style={styles.labelText}>Pay now</Text>
-        </View>
-      </View>``
-      <View style={[styles.rectangleGroup, styles.groupLayout]}>
-        <View style={[styles.groupChild2, styles.groupLayout]} />
-        <View style={[styles.groupParent, styles.parentLayout]}>
-          <View style={[styles.visaPng1Parent, styles.parentLayout]}>
-            <Image
-              style={styles.visaPng1Icon}
-              contentFit="cover"
-              source={require("../assets/81810053-visapng-1.png")}
-            />
-            <View style={styles.availableBalanceParent}>
-              <Text style={[styles.availableBalance, styles.text2Typo]}>
-                Available balance
-              </Text>
-              <Text style={[styles.text1, styles.text1FlexBox]}>$3,578.99</Text>
+    <ScrollView>
+      <View style={styles.paymentMethod}>
+        <View style={styles.detail}>
+          <Text style={[styles.detail1, styles.text1FlexBox]}>Detail</Text>
+          <View style={styles.detailChild} />
+          <View style={[styles.options, styles.optionsPosition]}>
+            <View style={[styles.option4, styles.optionLayout1]}>
+              <View style={[styles.optionInner, styles.optionLayout]} />
+              <Text style={[styles.service, styles.totalTypo]}>Service:</Text>
+              <Text
+                style={[styles.insideFridge, styles.textTypo]}
+              >{`Inside Fridge `}</Text>
+              <Image
+                style={[styles.notificationIcon, styles.iconPosition]}
+                contentFit="cover"
+                source={require("../assets/notification.png")}
+              />
+            </View>
+            <View style={[styles.option1, styles.optionLayout1]}>
+              <View style={[styles.optionItem, styles.optionLayout]} />
+              <Text style={[styles.option2, styles.totalTypo]}>Option:</Text>
+              <Text style={[styles.option3, styles.textTypo]}>Option</Text>
+              <Image
+                style={[styles.calendarIcon, styles.iconPosition]}
+                contentFit="cover"
+                source={require("../assets/calendar.png")}
+              />
+            </View>
+            <View style={[styles.option, styles.optionLayout1]}>
+              <View style={[styles.optionChild, styles.optionLayout]} />
+              <Text style={[styles.total, styles.totalTypo]}>Total:</Text>
+              <Text style={[styles.text, styles.textTypo]}>10$</Text>
+              <Image
+                style={[styles.myplanIcon, styles.iconPosition]}
+                contentFit="cover"
+                source={require("../assets/myplan.png")}
+              />
             </View>
           </View>
-          <Text style={[styles.text2, styles.text2Typo]}>
-            5172 4567 8888 0000
-          </Text>
+          <View style={styles.badge}>
+            <Text style={styles.labelText}>Pay now</Text>
+          </View>
+        </View>
+        <View style={[styles.rectangleGroup, styles.groupLayout]}>
+          <View style={[styles.groupChild2, styles.groupLayout]} />
+          <View style={[styles.groupParent, styles.parentLayout]}>
+            <View style={[styles.visaPng1Parent, styles.parentLayout]}>
+              <Image
+                style={styles.visaPng1Icon}
+                contentFit="cover"
+                source={require("../assets/81810053-visapng-1.png")}
+              />
+              <View style={styles.availableBalanceParent}>
+                <Text style={[styles.availableBalance, styles.text2Typo]}>
+                  Available balance
+                </Text>
+                <Text style={[styles.text1, styles.text1FlexBox]}>$3,578.99</Text>
+              </View>
+            </View>
+            <Text style={[styles.text2, styles.text2Typo]}>
+              5172 4567 8888 0000
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
