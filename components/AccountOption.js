@@ -9,8 +9,20 @@ import { useIsFocused } from "@react-navigation/core";
 
 
 
-const AccountOption = ({ navigation }) => {
+const AccountOption =  ({ navigation }) => {
   const [userLogedIn, setUserLogedIn] = React.useState(false);
+  const isFocused = useIsFocused();
+  React.useEffect( () => {
+    const checkLogin = async() => {
+      const checkData = await AsyncStorage.getItem("token");
+      if(checkData) {
+        setUserLogedIn(true);
+      }
+    };
+    if(isFocused) {
+      checkLogin();
+    }
+  },[isFocused]);
   const handleNotificationPress = () => {
     console.log("Notification");
   }
@@ -28,13 +40,21 @@ const AccountOption = ({ navigation }) => {
   }
 
   const handleLogOutPress = async ()  => {
-    await AsyncStorage.clear();
-    setUserLogedIn(false);
+    const data = await AsyncStorage.getItem("token");
+    if(data){
+      await AsyncStorage.clear();
+      setUserLogedIn(false);
+    }
     navigation.navigate("SignIn");
   }
 
-  const handleLogInPress = () => {
-    setUserLogedIn(true);
+  const handleLogInPress = async() => {
+    const data = await AsyncStorage.getItem("token");
+    if(!data){
+      setUserLogedIn(false);
+    }else{
+      setUserLogedIn(true);
+    }
     navigation.navigate("SignIn");
   }
 

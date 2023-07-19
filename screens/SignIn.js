@@ -38,7 +38,8 @@ const SignIn = ({ navigation }) => {
           }))
           if(data.data.user.role[0] === "user") {
             console.log("zo");   
-            navigation.navigate("Home")
+            navigation.goBack();
+            navigation.navigate("HomeStack")
             return
           }
           } catch (error) {

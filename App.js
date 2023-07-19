@@ -61,6 +61,7 @@ const ScheduleStack = () => {
 }
 
 const AccountStack = () => {
+
   return (
     <Stack.Navigator
       initialRouteName="Account"
