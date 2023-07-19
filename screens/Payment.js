@@ -46,7 +46,7 @@ const PaymentMethod = () => {
         <View style={styles.badge}>
           <Text style={styles.labelText}>Pay now</Text>
         </View>
-      </View>
+      </View>``
       <View style={[styles.rectangleGroup, styles.groupLayout]}>
         <View style={[styles.groupChild2, styles.groupLayout]} />
         <View style={[styles.groupParent, styles.parentLayout]}>
