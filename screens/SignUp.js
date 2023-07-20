@@ -5,6 +5,7 @@ import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
 const SignUp = ({ navigation }) => {
   const [email, setEmail] = React.useState("");
+  const [name, setName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [hidePassword, setHidePassword] = React.useState(true);
 
@@ -47,8 +48,24 @@ const SignUp = ({ navigation }) => {
               source={require("../assets/expand-down.png")}
             />
           </View>
-          <Text style={[styles.password, styles.emailTypo]}>Password</Text>
+          <Text style={[styles.name, styles.emailTypo]}>Name</Text>
           <View style={[styles.rectangleContainer, styles.groupLayout]}>
+            <View style={styles.groupInnerShadowBox} />
+            <TextInput
+              style={styles.textTypo}
+              onChangeText={setName}
+              placeholder="Smart City"
+            />
+            <Pressable onPress={handleUnhidePassword}>
+              <Image
+                style={[styles.eyeLightIcon, styles.parentPosition]}
+                contentFit="cover"
+              source={require("../assets/expand-down.png")}
+              />
+            </Pressable>
+          </View>
+          <Text style={[styles.password, styles.emailTypo]}>Password</Text>
+          <View style={[styles.rectangleContainer1, styles.groupLayout]}>
             <View style={styles.groupInnerShadowBox} />
             <TextInput
               style={styles.textTypo}
@@ -108,6 +125,9 @@ const SignUp = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  name: {
+
+  },
   buttonPosition: {
     width: 375,
     left: 0,
@@ -171,7 +191,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 15,
     justifyContent: "center",
-    top: 540,
+    top: 655,
     width: 270,
     height: 26,
     position: "absolute",
@@ -199,7 +219,7 @@ const styles = StyleSheet.create({
     width: 127,
   },
   rectangleParent: {
-    top: 456,
+    top: 571,
   },
   groupItem: {
     borderStyle: "solid",
@@ -220,10 +240,10 @@ const styles = StyleSheet.create({
     width: 103,
   },
   rectangleGroup: {
-    top: 386,
+    top: 501,
   },
   orLoginWith: {
-    top: 330,
+    top: 445,
     left: 102,
     width: 172,
     height: 23,
@@ -260,7 +280,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   button: {
-    top: 248,
+    top: 363,
     height: 48,
     overflow: "hidden",
   },
@@ -285,18 +305,20 @@ const styles = StyleSheet.create({
     left: 329,
     width: 28,
   },
-  text: {
-    width: 118,
-  },
   rectangleContainer: {
     top: 158,
   },
+  
+  rectangleContainer1: {
+    top: 271,
+  },
   password: {
-    top: 115,
+    top: 230,
     width: 100,
   },
-  votremailgmailcom: {
-    width: 212,
+  name: {
+    top: 115,
+    width: 100,
   },
   groupView: {
     top: 45,
@@ -306,12 +328,12 @@ const styles = StyleSheet.create({
     top: 0,
   },
   content: {
-    height: 566,
+    height: 666,
     alignItems: "center",
   },
   signin: {
     backgroundColor: Color.gray_100,
-    height: 780,
+    height: 750,
     alignItems: "center",
     justifyContent: "center",
   },
