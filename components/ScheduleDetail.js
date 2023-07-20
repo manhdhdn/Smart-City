@@ -22,7 +22,7 @@ const ScheduleDetail = (props) => {
 
   return (
     <View style={styles.scheduledetail}>
-      <Text style={[styles.date, styles.amTypo]}>{props.date}</Text>
+      <Text style={[styles.date, styles.amTypo]}>{props.date.format("DD-MM-YYYY")}</Text>
       <View style={styles.planLayout}>
         <View style={[styles.cleaner, styles.cleanerLayout]}>
           {paid()}
