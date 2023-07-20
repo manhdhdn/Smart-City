@@ -2,8 +2,15 @@ import * as React from "react";
 import { Text, TextInput, StyleSheet, View, Pressable, ScrollView } from "react-native";
 import { Image } from "expo-image";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
+import axios from "axios";
+
+const MIN_USERNAME_LENGTH = 4;
+const MAX_USERNAME_LENGTH = 20;
+const MIN_PASSWORD_LENGTH = 6;
+const MAX_PASSWORD_LENGTH = 30;
 
 const SignUp = ({ navigation }) => {
+  const [name, setName] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [hidePassword, setHidePassword] = React.useState(true);
@@ -16,8 +23,41 @@ const SignUp = ({ navigation }) => {
     navigation.navigate("SignIn");
   }
 
-  const handleRegisterPress = () => {
-    navigation.navigate("Account");
+  const handleRegisterPress = async() => {
+    if (username.length < MIN_USERNAME_LENGTH || username.length > MAX_USERNAME_LENGTH) {
+      alert(`Username must be between ${MIN_USERNAME_LENGTH} and ${MAX_USERNAME_LENGTH} characters.`);
+      return;
+    }
+  
+    if (password.length < MIN_PASSWORD_LENGTH || password.length > MAX_PASSWORD_LENGTH) {
+      alert(`Password must be between ${MIN_PASSWORD_LENGTH} and ${MAX_PASSWORD_LENGTH} characters.`);
+      return;
+    }
+    try {
+      const data = await axios.post(`http://192.168.1.178:8089/api/signUp`,
+      { 
+      name: name,
+      username: username,
+      password: password
+    })
+    console.log(data.data);
+    if(data.data.message) {
+      const successMessage = data.data.message;
+      navigation.navigate("SignIn",{ successMessage });
+    }
+    } catch (error) {
+      console.log(error);
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data.message;
+        if (errorMessage === "Username is taken!") {
+          alert(errorMessage);
+        } else {
+          console.error(errorMessage);
+        }
+      }
+      return;
+    }
+    navigation.navigate("SignIn");
   }
 
   const handleGoogleRegisterPress = () => {
@@ -38,7 +78,7 @@ const SignUp = ({ navigation }) => {
             <TextInput
               style={styles.textTypo}
               onChangeText={setUsername}
-              placeholder="minhtbse151276"
+              placeholder="Username"
               keyboardType="email-address"
             />
             <Image
@@ -47,8 +87,24 @@ const SignUp = ({ navigation }) => {
               source={require("../assets/expand-down.png")}
             />
           </View>
-          <Text style={[styles.password, styles.emailTypo]}>Password</Text>
+          <Text style={[styles.name, styles.emailTypo]}>Name</Text>
           <View style={[styles.rectangleContainer, styles.groupLayout]}>
+            <View style={styles.groupInnerShadowBox} />
+            <TextInput
+              style={styles.textTypo}
+              onChangeText={setName}
+              placeholder="Smart City"
+            />
+            <Pressable onPress={handleUnhidePassword}>
+              <Image
+                style={[styles.eyeLightIcon, styles.parentPosition]}
+                contentFit="cover"
+              source={require("../assets/expand-down.png")}
+              />
+            </Pressable>
+          </View>
+          <Text style={[styles.password, styles.emailTypo]}>Password</Text>
+          <View style={[styles.rectangleContainer1, styles.groupLayout]}>
             <View style={styles.groupInnerShadowBox} />
             <TextInput
               style={styles.textTypo}
@@ -108,6 +164,9 @@ const SignUp = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  name: {
+
+  },
   buttonPosition: {
     width: 375,
     left: 0,
@@ -171,7 +230,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 15,
     justifyContent: "center",
-    top: 540,
+    top: 655,
     width: 270,
     height: 26,
     position: "absolute",
@@ -199,7 +258,7 @@ const styles = StyleSheet.create({
     width: 127,
   },
   rectangleParent: {
-    top: 456,
+    top: 571,
   },
   groupItem: {
     borderStyle: "solid",
@@ -220,10 +279,10 @@ const styles = StyleSheet.create({
     width: 103,
   },
   rectangleGroup: {
-    top: 386,
+    top: 501,
   },
   orLoginWith: {
-    top: 330,
+    top: 445,
     left: 102,
     width: 172,
     height: 23,
@@ -260,7 +319,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   button: {
-    top: 248,
+    top: 363,
     height: 48,
     overflow: "hidden",
   },
@@ -285,18 +344,20 @@ const styles = StyleSheet.create({
     left: 329,
     width: 28,
   },
-  text: {
-    width: 118,
-  },
   rectangleContainer: {
     top: 158,
   },
+  
+  rectangleContainer1: {
+    top: 271,
+  },
   password: {
-    top: 115,
+    top: 230,
     width: 100,
   },
-  votremailgmailcom: {
-    width: 212,
+  name: {
+    top: 115,
+    width: 100,
   },
   groupView: {
     top: 45,
@@ -306,12 +367,12 @@ const styles = StyleSheet.create({
     top: 0,
   },
   content: {
-    height: 566,
+    height: 666,
     alignItems: "center",
   },
   signin: {
     backgroundColor: Color.gray_100,
-    height: 780,
+    height: 750,
     alignItems: "center",
     justifyContent: "center",
   },

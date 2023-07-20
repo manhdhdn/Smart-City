@@ -111,6 +111,7 @@ const InfomationOption = ({ navigation }) => {
           {
             name: name,
             phone: phone,
+            email: email,
             block: block,
             room: room,
             image: image,

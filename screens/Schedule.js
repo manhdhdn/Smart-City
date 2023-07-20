@@ -1,11 +1,14 @@
 import * as React from "react";
+
+import moment from "moment/moment";
+
 import { StyleSheet, View, ScrollView, Text } from "react-native";
 import ScheduleDetail from "../components/ScheduleDetail";
 import ScheduleTime from "../components/ScheduleTime";
 import { FontFamily, Color } from "../GlobalStyles";
 
 const Schedule = () => {
-  const [date, setDate] = React.useState((new Date()).toISOString());
+  const [date, setDate] = React.useState(moment());
 
   const handleSelectTime = (date) => {
     setDate(date);

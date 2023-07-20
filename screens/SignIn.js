@@ -1,11 +1,17 @@
 import * as React from "react";
-import { TextInput, Text, StyleSheet, View, Pressable, ScrollView } from "react-native";
+import { TextInput, Text, StyleSheet, View, Pressable, ScrollView, Alert  } from "react-native";
 import { Image } from "expo-image";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const SignIn = ({ navigation }) => {
+const SignIn = ({ navigation, route  }) => {
+    React.useEffect(() => {
+        const { successMessage } = route.params || {};
+        if (successMessage) {
+          Alert.alert(successMessage);
+        }
+      }, [route.params]);
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [hidePassword, setHidePassword] = React.useState(true);
@@ -19,7 +25,6 @@ const SignIn = ({ navigation }) => {
     }
 
     const handleLogInPress = async () => {
-        console.log("Login2");
         try {
             const data = await axios.post(`http://192.168.1.178:8089/api/signIn`,
             { 
