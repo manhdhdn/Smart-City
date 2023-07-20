@@ -13,6 +13,7 @@ import Schedule from "./screens/Schedule";
 import NextSplash from "./screens/NextSplash";
 import SignUp from "./screens/SignUp";
 import SignIn from "./screens/SignIn";
+import Info from "./screens/Infomation";
 import PaymentMethod from "./screens/Payment";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -72,6 +73,7 @@ const AccountStack = () => {
       <Stack.Screen name="Schedule" component={Schedule} />
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="Infomation" component={Info} />
     </Stack.Navigator>
   )
 }

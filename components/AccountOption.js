@@ -35,8 +35,8 @@ const AccountOption =  ({ navigation }) => {
     navigation.navigate("Home");
   }
 
-  const handleAddressPress = () => {
-    console.log("Address");
+  const handleInfoPress = () => {
+    navigation.navigate("Infomation");
   }
 
   const handleLogOutPress = async ()  => {
@@ -81,10 +81,10 @@ const AccountOption =  ({ navigation }) => {
           </View>
           <View style={styles.line} />
         </Pressable>
-        <Pressable style={styles.singleOption} onPress={handleAddressPress}>
+        <Pressable style={styles.singleOption} onPress={handleInfoPress}>
           <View style={styles.optionContent}>
-            <MaterialCommunityIcons name="map-marker-outline" size={24} color={Color.slateblue} />
-            <Text style={styles.text}>Address</Text>
+            <MaterialCommunityIcons name="account-outline" size={24} color={Color.slateblue} />
+            <Text style={styles.text}>Infomation</Text>
           </View>
           <View style={styles.line} />
         </Pressable>

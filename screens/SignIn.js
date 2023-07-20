@@ -28,14 +28,6 @@ const SignIn = ({ navigation }) => {
           })
           console.log(data.data);
           await AsyncStorage.setItem("token", data.data.token)
-          await AsyncStorage.setItem("user",JSON.stringify({
-            id: data.data.user._id,
-            image: data.data.user.image,
-            email: data.data.user.email,
-            name: data.data.user.name,
-            role: data.data.user.role[0],
-            isLogin: true
-          }))
           if(data.data.user.role[0] === "user") {
             console.log("zo");   
             navigation.goBack();

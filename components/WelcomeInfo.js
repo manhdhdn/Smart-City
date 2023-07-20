@@ -30,6 +30,17 @@ const WelcomeInfo = () => {
             Authorization: `Bearer ${access_token}`,
           },
         });
+        await AsyncStorage.setItem("user",JSON.stringify({
+          id: res.data.user._id,
+          image: res.data.user.image,
+          email: res.data.user.email,
+          name: res.data.user.name,
+          phone:res.data.user.phone,
+          block:res.data.user.block,
+          room:res.data.user.room,
+          role: res.data.user.role[0],
+          isLogin: true
+        }))
         setDataUser(res.data.user);
       } catch (error) {
         console.error("API error:", error);
