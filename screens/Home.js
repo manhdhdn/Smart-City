@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { StyleSheet, View, ScrollView, Text, Pressable } from "react-native";
+import { StyleSheet, View, ScrollView, Text, Pressable, TextInput } from "react-native";
 import { Image } from "expo-image";
 import SelectedOption from "../components/SelectedOption";
 import SelectedCleaning from "../components/SelectedCleaning";
@@ -8,10 +8,11 @@ import SelectedService from "../components/SelectedService";
 import SelectedTime from "../components/SelectedTime";
 import { Color, FontFamily, FontSize } from "../GlobalStyles";
 
-const Home = ({ navigation}) => {
+const Home = ({ navigation }) => {
   const [selectedCleaning, setSelectedCleaning] = React.useState(0);
   const [selectedService, setSelectedService] = React.useState(0);
   const [selectedOption, setSelectedOption] = React.useState(0);
+  const [searchText, setSearchText] = React.useState("");
 
   const [services, setServices] = React.useState(null);
   const [options, setOptions] = React.useState(null);
@@ -111,9 +112,11 @@ const Home = ({ navigation}) => {
                   contentFit="cover"
                   source={require("../assets/basics--search.png")}
                 />
-                <Text style={[styles.searchService, styles.scheduleTypo]}>
-                  Search service...
-                </Text>
+                <TextInput
+                  style={[styles.searchService, styles.scheduleTypo]}
+                  onChangeText={setSearchText}
+                  placeholder="Search service..."
+                />
               </View>
             </View>
           </View>
@@ -179,7 +182,7 @@ const styles = StyleSheet.create({
   },
   interfaceAdjustHorizontal: {
     left: 264,
-    top: 0,
+    top: 4,
     position: "absolute",
   },
   searchService: {
@@ -188,13 +191,15 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     letterSpacing: 0.4,
     textAlign: "left",
+    width: "85%",
+    height: "100%",
   },
   basicsSearchParent: {
     top: 0,
     left: 0,
   },
   interfaceAdjustHorizontalParent: {
-    top: 18,
+    top: 14,
     left: 15,
     width: 284,
     height: 20,
