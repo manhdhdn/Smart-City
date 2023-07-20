@@ -8,7 +8,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/core";
 import axios from "axios";
 
-
+const phoneRegex = /^[0-9]{10,}$/;
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const blockRegex = /^[A-Z]\d{2}$/;
+const roomRegex = /^[0-8][0-2][0-9]$/;
 
 const InfomationOption = ({ navigation }) => {
   const [userInfo, setUserInfo] = React.useState(false);
@@ -65,6 +68,42 @@ const InfomationOption = ({ navigation }) => {
   };
 
   const handleUpdatePress = async () => {
+    if (!name.trim()) {
+      alert("Vui lòng nhập tên của bạn.");
+      return;
+    }
+  
+    if (!phone.trim()) {
+      alert("Vui lòng nhập số điện thoại của bạn.");
+      return;
+    }else if(!phoneRegex.test(phone)) {
+      alert("Số điện thoại phải có đủ 10 số.");
+      return;
+    }
+
+    if (!email.trim()) {
+      alert("Vui lòng nhập email của bạn.");
+      return;
+    }else if(!emailRegex.test(email)) {
+      alert("Email phải phải như này abc@gmail.com.");
+      return;
+    }
+  
+    if (!block.trim()) {
+      alert("Vui lòng nhập block của bạn.");
+      return;
+    }else if(!blockRegex.test(block)) {
+      alert("Block không hợp lệ(C01).");
+      return;
+    }
+  
+    if (!room.trim()) {
+      alert("Vui lòng nhập room của bạn.");
+      return;
+    }else if(!roomRegex.test(room)) {
+      alert("Room không hợp lệ(001).");
+      return;
+    }
     const access_token = await AsyncStorage.getItem("token");
       if (access_token) {
         try {
