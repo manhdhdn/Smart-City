@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, Pressable } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 import { Image } from "expo-image";
 import { FontFamily, Color } from "../GlobalStyles";
 import { useIsFocused } from "@react-navigation/native";
@@ -8,19 +9,21 @@ import axios from "axios";
 
 const WelcomeInfo = () => {
   const [dataUser, setDataUser] = React.useState("");
+  const [image, setImage] = React.useState(null);
+
   const isFocused = useIsFocused();
 
   React.useEffect(() => {
     const loadDataOrder = async () => {
       const user_info_json = await AsyncStorage.getItem("user");
-        user_info_json != null
-          ? JSON.parse(user_info_json)
-          : {
-              id: "001",
-              isLogin: false,
-            };
+      user_info_json != null
+        ? JSON.parse(user_info_json)
+        : {
+          id: "001",
+          isLogin: false,
+        };
       const access_token = await AsyncStorage.getItem("token");
-      if(!access_token){
+      if (!access_token) {
         setDataUser("");
         return
       };
@@ -30,14 +33,14 @@ const WelcomeInfo = () => {
             Authorization: `Bearer ${access_token}`,
           },
         });
-        await AsyncStorage.setItem("user",JSON.stringify({
+        await AsyncStorage.setItem("user", JSON.stringify({
           id: res.data.user._id,
           image: res.data.user.image,
           email: res.data.user.email,
           name: res.data.user.name,
-          phone:res.data.user.phone,
-          block:res.data.user.block,
-          room:res.data.user.room,
+          phone: res.data.user.phone,
+          block: res.data.user.block,
+          room: res.data.user.room,
           role: res.data.user.role[0],
           isLogin: true
         }))
@@ -52,6 +55,21 @@ const WelcomeInfo = () => {
     }
   }, [isFocused]);
 
+  const chooseImage = async () => {
+    const options = {
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    };
+
+    const result = await ImagePicker.launchImageLibraryAsync(options);
+
+    if (!result.canceled) {
+      setImage(result.uri);
+    }
+  };
+
   return (
     <View style={styles.welcomeinfo}>
       {dataUser ? (
@@ -65,22 +83,41 @@ const WelcomeInfo = () => {
           <Image
             style={styles.pictureIcon}
             contentFit="cover"
-            source={{ uri: dataUser.image }}
+            source={require("../assets/picture.png")}
           />
+          <Pressable onPress={chooseImage}>
+            <Image
+              style={styles.profileImage}
+              contentFit="cover"
+              source={{ uri: dataUser.image }}
+            />
+          </Pressable>
         </>
       ) : (
-        <><Text style={[styles.hiKateWelcomeBack, styles.completedTypo]}>
-            {`Welcome to app`}
-          </Text><Image
-              style={styles.pictureIcon}
-              contentFit="cover"
-              source={require("../assets/traidep.png")} /></>
+        <>
+          <Text style={[styles.hiKateWelcomeBack, styles.completedTypo]}>
+            {`Hi,\nWelcome to app`}
+          </Text>
+          <Image
+            style={styles.pictureIcon}
+            contentFit="cover"
+            source={require("../assets/picture.png")}
+          />
+        </>
       )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  profileImage: {
+    top: 10,
+    left: 16,
+    width: 61.37,
+    height: 61.93,
+    borderRadius: 30,
+    position: "absolute",
+  },
   completedTypo: {
     textAlign: "left",
     fontWeight: "700",
@@ -102,10 +139,9 @@ const styles = StyleSheet.create({
   pictureIcon: {
     top: 1,
     left: 0,
-    width: 100,
-    height: 100,
+    width: 93,
+    height: 84,
     position: "absolute",
-    borderRadius: 40,
   },
   welcomeinfo: {
     top: 57,
