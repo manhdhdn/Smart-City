@@ -4,6 +4,7 @@ import { Image } from "expo-image";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import config from "../baseUrl.json";
 
 const SignIn = ({ navigation, route  }) => {
     React.useEffect(() => {
@@ -26,7 +27,7 @@ const SignIn = ({ navigation, route  }) => {
 
     const handleLogInPress = async () => {
         try {
-            const data = await axios.post(`http://192.168.1.178:8089/api/signIn`,
+            const data = await axios.post(`http://${config.baseURL}:8089/api/signIn`,
             { 
             username: username,
             password: password

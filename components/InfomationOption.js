@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontFamily, Color } from "../GlobalStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/core";
+import config from "../baseUrl.json";
 import axios from "axios";
 
 const phoneRegex = /^[0-9]{10,}$/;
@@ -107,7 +108,7 @@ const InfomationOption = ({ navigation }) => {
     const access_token = await AsyncStorage.getItem("token");
       if (access_token) {
         try {
-          const res = await axios.put(`http://192.168.1.178:8089/api/user/${id}`,
+          const res = await axios.put(`http://${config.baseURL}:8089/api/user/${id}`,
           {
             name: name,
             phone: phone,

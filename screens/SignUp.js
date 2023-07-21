@@ -34,7 +34,7 @@ const SignUp = ({ navigation }) => {
       return;
     }
     try {
-      const data = await axios.post(`http://192.168.1.178:8089/api/signUp`,
+      const data = await axios.post(`http://${config.baseURL}:8089/api/signUp`,
       { 
       name: name,
       username: username,
