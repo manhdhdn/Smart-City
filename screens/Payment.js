@@ -1,19 +1,44 @@
 import * as React from "react";
 
-import { Text, StyleSheet, View, ScrollView, Pressable } from "react-native";
+import { Text, StyleSheet, View, ScrollView, Pressable, Linking } from "react-native";
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import MoMo from "../apis/momo/MoMo";
 
-const PaymentMethod = () => {
+const PaymentMethod = ({ navigation }) => {
   const [total, setTotal] = React.useState(100000);
+  const [paymentInfo, setPaymentInfo] = React.useState(null);
+  const [paymentSuccess, setPaymentSuccess] = React.useState(false);
+
+  React.useEffect(() => {
+    if (paymentSuccess) {
+      navigation.navigate("Schedule");
+    }
+  }, [paymentSuccess]);
+
+  React.useEffect(() => {
+    const interval = paymentInfo && setInterval(async () => {
+      let status = (await MoMo.checkPayment(paymentInfo)).resultCode;
+
+      if (status === 0) {
+        setPaymentSuccess(true);
+
+        clearInterval(interval);
+      }
+    }, 2000);
+
+    return () => {
+      clearInterval(interval);
+    }
+  }, [paymentInfo]);
 
   const handlePaymentPress = async () => {
     let paymentInfo = await MoMo.createRequest(total);
 
-    console.log(paymentInfo);
+    setPaymentInfo(paymentInfo);
+    await Linking.openURL(paymentInfo.qrCodeUrl);
   }
 
   return (
