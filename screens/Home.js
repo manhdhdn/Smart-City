@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { StyleSheet, View, ScrollView, Text, Pressable, TextInput } from "react-native";
 import { Image } from "expo-image";
+
 import SelectedOption from "../components/SelectedOption";
 import SelectedCleaning from "../components/SelectedCleaning";
 import SelectedService from "../components/SelectedService";
@@ -13,6 +14,7 @@ const Home = ({ navigation }) => {
   const [selectedService, setSelectedService] = React.useState(0);
   const [selectedOption, setSelectedOption] = React.useState(0);
   const [searchText, setSearchText] = React.useState("");
+  const [date, setDate] = React.useState(new Date());
 
   const [services, setServices] = React.useState(null);
   const [options, setOptions] = React.useState(null);
@@ -123,7 +125,7 @@ const Home = ({ navigation }) => {
           <SelectedCleaning cleaning={selectedCleaning} handleCleaningChange={handleCleaningChange} />
           <SelectedService services={services} selectedService={selectedService} handleServiceChange={handleServiceChange} />
           <SelectedOption options={options} selectedOption={selectedOption} handleOptionChange={handleOptionChange} />
-          <SelectedTime />
+          <SelectedTime date={date} setDate={setDate} />
           <Pressable style={[styles.badge, styles.badgeFlexBox]} onPress={handleBookNowPress}>
             <Text style={[styles.labelText, styles.am9Typo]}>Book Now</Text>
           </Pressable>
