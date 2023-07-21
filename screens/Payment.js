@@ -1,53 +1,49 @@
 import * as React from "react";
-import { Text, StyleSheet, View, ScrollView } from "react-native";
+
+import { Text, StyleSheet, View, ScrollView, Pressable, Linking } from "react-native";
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const PaymentMethod = () => {
+import MoMo from "../apis/momo/MoMo";
+
+const PaymentMethod = ({ navigation }) => {
+  const [total, setTotal] = React.useState(100000);
+  const [paymentInfo, setPaymentInfo] = React.useState(null);
+  const [paymentSuccess, setPaymentSuccess] = React.useState(false);
+
+  React.useEffect(() => {
+    if (paymentSuccess) {
+      navigation.navigate("Schedule");
+    }
+  }, [paymentSuccess]);
+
+  React.useEffect(() => {
+    const interval = paymentInfo && setInterval(async () => {
+      let status = (await MoMo.checkPayment(paymentInfo)).resultCode;
+
+      if (status === 0) {
+        setPaymentSuccess(true);
+
+        clearInterval(interval);
+      }
+    }, 2000);
+
+    return () => {
+      clearInterval(interval);
+    }
+  }, [paymentInfo]);
+
+  const handlePaymentPress = async () => {
+    let paymentInfo = await MoMo.createRequest(total);
+
+    setPaymentInfo(paymentInfo);
+    await Linking.openURL(paymentInfo.qrCodeUrl);
+  }
+
   return (
     <ScrollView>
       <View style={styles.paymentMethod}>
-        <View style={styles.detail}>
-          <Text style={[styles.detail1, styles.text1FlexBox]}>Detail</Text>
-          <View style={styles.detailChild} />
-          <View style={[styles.options, styles.optionsPosition]}>
-            <View style={[styles.option4, styles.optionLayout1]}>
-              <View style={[styles.optionInner, styles.optionLayout]} />
-              <Text style={[styles.service, styles.totalTypo]}>Service:</Text>
-              <Text
-                style={[styles.insideFridge, styles.textTypo]}
-              >{`Inside Fridge `}</Text>
-              <Image
-                style={[styles.notificationIcon, styles.iconPosition]}
-                contentFit="cover"
-                source={require("../assets/notification.png")}
-              />
-            </View>
-            <View style={[styles.option1, styles.optionLayout1]}>
-              <View style={[styles.optionItem, styles.optionLayout]} />
-              <Text style={[styles.option2, styles.totalTypo]}>Option:</Text>
-              <Text style={[styles.option3, styles.textTypo]}>Option</Text>
-              <Image
-                style={[styles.calendarIcon, styles.iconPosition]}
-                contentFit="cover"
-                source={require("../assets/calendar.png")}
-              />
-            </View>
-            <View style={[styles.option, styles.optionLayout1]}>
-              <View style={[styles.optionChild, styles.optionLayout]} />
-              <Text style={[styles.total, styles.totalTypo]}>Total:</Text>
-              <Text style={[styles.text, styles.textTypo]}>10$</Text>
-              <Image
-                style={[styles.myplanIcon, styles.iconPosition]}
-                contentFit="cover"
-                source={require("../assets/myplan.png")}
-              />
-            </View>
-          </View>
-          <View style={styles.badge}>
-            <Text style={styles.labelText}>Pay now</Text>
-          </View>
-        </View>
         <View style={[styles.rectangleGroup, styles.groupLayout]}>
           <View style={[styles.groupChild2, styles.groupLayout]} />
           <View style={[styles.groupParent, styles.parentLayout]}>
@@ -68,6 +64,48 @@ const PaymentMethod = () => {
               5172 4567 8888 0000
             </Text>
           </View>
+        </View>
+        <View style={styles.detail}>
+          <Text style={[styles.detail1, styles.text1FlexBox]}>Detail</Text>
+          <View style={styles.detailChild} />
+          <View style={[styles.options, styles.optionsPosition]}>
+            <View style={[styles.option4, styles.optionLayout1]}>
+              <View style={[styles.optionInner, styles.optionLayout]} />
+              <Text style={[styles.service, styles.totalTypo]}>Service:</Text>
+              <Text style={[styles.insideFridge, styles.textTypo]}>Inside Fridge</Text>
+              <MaterialCommunityIcons
+                style={[styles.icon, styles.iconPosition]}
+                name="room-service-outline"
+                size={24}
+                color={Color.slateblue} />
+            </View>
+            <View style={[styles.option1, styles.optionLayout1]}>
+              <View style={[styles.optionItem, styles.optionLayout]} />
+              <Text style={[styles.option2, styles.totalTypo]}>Option:</Text>
+              <Text style={[styles.option3, styles.textTypo]}>Option</Text>
+              <MaterialCommunityIcons
+                style={[styles.icon, styles.iconPosition]}
+                name="apple-keyboard-option"
+                size={24}
+                color={Color.slateblue} />
+            </View>
+            <View style={[styles.option, styles.optionLayout1]}>
+              <View style={[styles.optionChild, styles.optionLayout]} />
+              <Text style={[styles.total, styles.totalTypo]}>Total:</Text>
+              <Text style={[styles.text, styles.textTypo]}>{total.toLocaleString("vi-VN")}</Text>
+              <MaterialCommunityIcons
+                style={[styles.icon, styles.iconPosition]}
+                name="credit-card-outline"
+                size={24}
+                color={Color.slateblue} />
+            </View>
+          </View>
+          <Pressable
+            onPress={() => handlePaymentPress()}
+            style={styles.badge}
+          >
+            <Text style={styles.labelText}>Pay now</Text>
+          </Pressable>
         </View>
       </View>
     </ScrollView>
@@ -185,7 +223,7 @@ const styles = StyleSheet.create({
     top: 1,
   },
   text: {
-    left: 306,
+    right: 25,
     top: 0,
   },
   myplanIcon: {
@@ -212,13 +250,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   option3: {
-    left: 290,
+    right: 25,
     top: 1,
   },
   calendarIcon: {
     top: 5,
-    height: 17,
-    width: 18,
+    height: 24,
+    width: 24,
     left: 30,
   },
   option1: {
@@ -234,15 +272,12 @@ const styles = StyleSheet.create({
     top: 0,
   },
   insideFridge: {
-    left: 243,
+    right: 25,
     top: 1,
   },
-  notificationIcon: {
-    width: 21,
+  icon: {
+    top: 2,
     left: 28,
-    height: 18,
-    top: 4,
-    overflow: "hidden",
   },
   option4: {
     left: 1,
