@@ -1,11 +1,31 @@
 import * as React from "react";
-import { StyleSheet, View, Text } from "react-native";
+
+import { StyleSheet, View, Text, Pressable } from "react-native";
 import { Image } from "expo-image";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
 
-const SelectedTime = () => {
+const SelectedTime = (props) => {
+  const [mode, setMode] = React.useState();
+  const [show, setShow] = React.useState(false);
+
+  const date = props.date.getDate() + "-" + (props.date.getMonth() + 1) + "-" + props.date.getFullYear();
+  const time = props.date.getHours() + ":" + props.date.getMinutes();
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || props.date;
+    setShow(false);
+    props.setDate(currentDate);
+  }
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  }
+
   return (
     <View style={styles.selectedextras}>
+      <Text style={[styles.selectedExtras, styles.am9Typo]}>Selected Time</Text>
       <View style={[styles.rectangleParent, styles.groupChildLayout]}>
         <View style={[styles.groupChild, styles.groupPosition]} />
         <Image
@@ -14,8 +34,12 @@ const SelectedTime = () => {
           source={require("../assets/basics--rightarrow.png")}
         />
         <View style={styles.scheduleParent}>
-          <Text style={styles.schedule}>Schedule</Text>
-          <Text style={[styles.am9, styles.am9Typo]}>6 AM - 9 AM</Text>
+          <Pressable onPress={() => showMode("date")}>
+            <Text style={styles.schedule}>{date}</Text>
+          </Pressable>
+          <Pressable onPress={() => showMode("time")}>
+            <Text style={[styles.am9, styles.am9Typo]}>{time}</Text>
+          </Pressable>
         </View>
         <View style={[styles.rectangleGroup, styles.groupLayout]}>
           <View style={[styles.groupItem, styles.groupLayout]} />
@@ -26,7 +50,17 @@ const SelectedTime = () => {
           />
         </View>
       </View>
-      <Text style={[styles.selectedExtras, styles.am9Typo]}>Selected Time</Text>
+      {show && (
+        <RNDateTimePicker
+          minimumDate={props.date}
+          testID="dateTimePicker"
+          value={props.date}
+          mode={mode}
+          is24Hour={true}
+          display="default"
+          onChange={onChange}
+        />
+      )}
     </View>
   );
 };
