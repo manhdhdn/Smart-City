@@ -48,7 +48,7 @@ const MoMo = {
 
         //Send the request and get the response
         const response = await fetch(
-            "http://192.168.1.47:8089/api/momo",
+            "http://192.168.1.122:8089/api/momo",
             {
                 method: "POST",
                 headers: {
@@ -90,7 +90,7 @@ const MoMo = {
         const postJsonString = requestBody;
 
         const response = await fetch(
-            "http://192.168.1.47:8089/api/momo",
+            "http://192.168.1.122:8089/api/momo",
             {
                 method: "POST",
                 headers: {
@@ -114,9 +114,9 @@ const MoMo = {
 
         var accessKey = "F8BBA842ECF85";
         var secretkey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";
-        var orderId = "EzCake" + new Date().getTime();
+        var orderId = "SmartCity" + new Date().getTime();
         var requestId = orderId;
-        var message = "Hoàn tiền hủy đơn hàng tại EzCake";
+        var message = "Hoàn tiền hủy dịch vụ tại Smart City";
 
         var payment = await MoMo.checkPayment(order.payment);
 
@@ -138,7 +138,7 @@ const MoMo = {
         const postJsonString = requestBody;
 
         const response = await fetch(
-            "http://192.168.1.47:8089/api/momo",
+            "http://192.168.1.122:8089/api/momo",
             {
                 method: "POST",
                 headers: {
