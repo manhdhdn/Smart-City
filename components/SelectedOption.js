@@ -9,7 +9,7 @@ const SelectedOption = (props) => {
 
     props.options.forEach(option => {
       element.push(
-        <Pressable key={option.id} onPress={() => props.handleOptionChange(option.id)}>
+        <Pressable key={option._id} onPress={() => props.handleOptionChange(option._id)}>
           <View style={styles.option}>
             <View style={styles.iconEllipse}>
               {props.selectedOption === option.id ? (
@@ -32,7 +32,7 @@ const SelectedOption = (props) => {
               />
             </View>
             <Text style={styles.organizingTypo}>
-              {option.name}
+              {option.optionName}
             </Text>
           </View>
         </Pressable>

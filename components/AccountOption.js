@@ -4,10 +4,25 @@ import { StyleSheet, View, Text, Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { FontFamily, Color } from "../GlobalStyles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/core";
 
-const AccountOption = ({ navigation }) => {
-  const [userLogedIn, setUserLogedIn] = React.useState(true);
 
+
+const AccountOption =  ({ navigation }) => {
+  const [userLogedIn, setUserLogedIn] = React.useState(false);
+  const isFocused = useIsFocused();
+  React.useEffect( () => {
+    const checkLogin = async() => {
+      const checkData = await AsyncStorage.getItem("token");
+      if(checkData) {
+        setUserLogedIn(true);
+      }
+    };
+    if(isFocused) {
+      checkLogin();
+    }
+  },[isFocused]);
   const handleNotificationPress = () => {
     console.log("Notification");
   }
@@ -20,29 +35,39 @@ const AccountOption = ({ navigation }) => {
     navigation.navigate("Home");
   }
 
-  const handleAddressPress = () => {
-    console.log("Address");
+  const handleInfoPress = () => {
+    navigation.navigate("Infomation");
   }
 
-  const handleLogOutPress = () => {
+  const handleLogOutPress = async ()  => {
+    const data = await AsyncStorage.getItem("token");
+    if(data){
+      await AsyncStorage.clear();
+      setUserLogedIn(false);
+    }
     navigation.navigate("SignIn");
   }
 
-  const handleLogInPress = () => {
+  const handleLogInPress = async() => {
+    const data = await AsyncStorage.getItem("token");
+    if(!data){
+      setUserLogedIn(false);
+    }else{
+      setUserLogedIn(true);
+    }
     navigation.navigate("SignIn");
   }
 
   const logedIn = () => {
     return (
-      <>
-        <Pressable style={styles.singleOption} onPress={handleNotificationPress}>
-          <View style={styles.optionContent}>
-            <MaterialCommunityIcons name="bell-ring-outline" size={24} color={Color.slateblue} />
-            <Text style={styles.text}>Notifications</Text>
-          </View>
-          <View style={styles.line} />
-        </Pressable>
-        <Pressable style={styles.singleOption} onPress={handleMyBookingsPress}>
+      <><Pressable style={styles.singleOption} onPress={handleNotificationPress}>
+        <View style={styles.optionContent}>
+          <MaterialCommunityIcons name="bell-ring-outline" size={24} color={Color.slateblue} />
+          <Text style={styles.text}>Notifications</Text>
+        </View>
+        <View style={styles.line} />
+      </Pressable>
+      <Pressable style={styles.singleOption} onPress={handleMyBookingsPress}>
           <View style={styles.optionContent}>
             <MaterialCommunityIcons name="calendar-month" size={24} color={Color.slateblue} />
             <Text style={styles.text}>My Bookings</Text>
@@ -56,10 +81,10 @@ const AccountOption = ({ navigation }) => {
           </View>
           <View style={styles.line} />
         </Pressable>
-        <Pressable style={styles.singleOption} onPress={handleAddressPress}>
+        <Pressable style={styles.singleOption} onPress={handleInfoPress}>
           <View style={styles.optionContent}>
-            <MaterialCommunityIcons name="map-marker-outline" size={24} color={Color.slateblue} />
-            <Text style={styles.text}>Address</Text>
+            <MaterialCommunityIcons name="account-outline" size={24} color={Color.slateblue} />
+            <Text style={styles.text}>Infomation</Text>
           </View>
           <View style={styles.line} />
         </Pressable>
@@ -68,7 +93,7 @@ const AccountOption = ({ navigation }) => {
             <MaterialCommunityIcons name="logout" size={44} color={Color.slateblue} />
             <Text style={styles.logInOutText}>Log out</Text>
           </Pressable>
-        </View>
+        </View> 
       </>
     );
   }

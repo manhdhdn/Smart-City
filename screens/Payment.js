@@ -4,16 +4,32 @@ import { Text, StyleSheet, View, ScrollView, Pressable, Linking } from "react-na
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import config from "../baseurl.json";
 
 import MoMo from "../apis/momo/MoMo";
 
-const PaymentMethod = ({ navigation }) => {
-  const [total, setTotal] = React.useState(100000);
+const PaymentMethod = ({ navigation, route }) => {
   const [paymentInfo, setPaymentInfo] = React.useState(null);
   const [paymentSuccess, setPaymentSuccess] = React.useState(false);
 
+  const paidStatusOrder = async () => {
+    const access_token = await AsyncStorage.getItem("token");
+    if (!access_token) {
+      navigation.navigate("SignIn");
+      return
+    };
+    await axios.put(`${config.baseUrl}/order/${data.data.order._id}`, {
+      status: "paid",
+    }, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+  }
+
   React.useEffect(() => {
     if (paymentSuccess) {
+      paidStatusOrder();
       navigation.navigate("Schedule");
     }
   }, [paymentSuccess]);
@@ -35,7 +51,7 @@ const PaymentMethod = ({ navigation }) => {
   }, [paymentInfo]);
 
   const handlePaymentPress = async () => {
-    let paymentInfo = await MoMo.createRequest(total);
+    let paymentInfo = await MoMo.createRequest(route.params.total);
 
     setPaymentInfo(paymentInfo);
     await Linking.openURL(paymentInfo.qrCodeUrl);
@@ -71,8 +87,8 @@ const PaymentMethod = ({ navigation }) => {
           <View style={[styles.options, styles.optionsPosition]}>
             <View style={[styles.option4, styles.optionLayout1]}>
               <View style={[styles.optionInner, styles.optionLayout]} />
-              <Text style={[styles.service, styles.totalTypo]}>Service:</Text>
-              <Text style={[styles.insideFridge, styles.textTypo]}>Inside Fridge</Text>
+              <Text style={[styles.service, styles.totalTypo]}>Name:</Text>
+              <Text style={[styles.insideFridge, styles.textTypo]}>{route.params.userName}</Text>
               <MaterialCommunityIcons
                 style={[styles.icon, styles.iconPosition]}
                 name="room-service-outline"
@@ -82,7 +98,7 @@ const PaymentMethod = ({ navigation }) => {
             <View style={[styles.option1, styles.optionLayout1]}>
               <View style={[styles.optionItem, styles.optionLayout]} />
               <Text style={[styles.option2, styles.totalTypo]}>Option:</Text>
-              <Text style={[styles.option3, styles.textTypo]}>Option</Text>
+              <Text style={[styles.option3, styles.textTypo]}>{route.params.optionName}</Text>
               <MaterialCommunityIcons
                 style={[styles.icon, styles.iconPosition]}
                 name="apple-keyboard-option"
@@ -92,7 +108,7 @@ const PaymentMethod = ({ navigation }) => {
             <View style={[styles.option, styles.optionLayout1]}>
               <View style={[styles.optionChild, styles.optionLayout]} />
               <Text style={[styles.total, styles.totalTypo]}>Total:</Text>
-              <Text style={[styles.text, styles.textTypo]}>{total.toLocaleString("vi-VN")}</Text>
+              <Text style={[styles.text, styles.textTypo]}>{route.params.total.toLocaleString("vi-VN")}</Text>
               <MaterialCommunityIcons
                 style={[styles.icon, styles.iconPosition]}
                 name="credit-card-outline"

@@ -7,7 +7,10 @@ import SelectedOption from "../components/SelectedOption";
 import SelectedCleaning from "../components/SelectedCleaning";
 import SelectedService from "../components/SelectedService";
 import SelectedTime from "../components/SelectedTime";
+import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Color, FontFamily, FontSize } from "../GlobalStyles";
+import config from "../baseurl.json";
 
 const Home = ({ navigation }) => {
   const [selectedCleaning, setSelectedCleaning] = React.useState(0);
@@ -19,79 +22,101 @@ const Home = ({ navigation }) => {
   const [services, setServices] = React.useState(null);
   const [options, setOptions] = React.useState(null);
 
-  React.useEffect(() => {
-    setServices([
-      {
-        id: 0,
-        name: "1",
-      },
-      {
-        id: 1,
-        name: "2",
-      },
-      {
-        id: 2,
-        name: "3",
-      },
-      {
-        id: 3,
-        name: "4",
-      },
-      {
-        id: 4,
-        name: "5",
-      },
-      {
-        id: 5,
-        name: "6",
-      }
-    ])
-  }, []);
 
   React.useEffect(() => {
-    setOptions([
-      {
-        id: 0,
-        name: "Organizing",
-      },
-      {
-        id: 1,
-        name: "Organizing",
-      },
-      {
-        id: 2,
-        name: "Organizing",
-      },
-      {
-        id: 3,
-        name: "Organizing",
-      },
-      {
-        id: 4,
-        name: "Organizing",
-      },
-      {
-        id: 5,
-        name: "Organizing",
+    const fetchService = async () => {
+      try {
+        const res = await axios.get(`${config.baseUrl}/service`);
+        setServices(res.data.list);
+      } catch (error) {
+        console.error("Error loading services:", error);
       }
-    ])
+    };
+    fetchService();
   }, []);
 
-  const handleBookNowPress = () => {
-    navigation.navigate("Payment");
+  const handleBookNowPress = async () => {
+    const access_token = await AsyncStorage.getItem("token");
+    if (!access_token) {
+      navigation.navigate("SignIn");
+      return
+    };
+    try {
+      //call order
+      const data = await axios.post(`${config.baseUrl}/order`, {}, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+
+      //call orderDetail
+      const dataDetail = await axios.post(`${config.baseUrl}/orderDetail`, {
+        orderDetail: {
+          optionID: selectedOption,
+          orderID: data.data.order._id,
+        }
+      }, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+
+      //cập nhật giá tổng cho order
+      const updateOrder = await axios.put(`${config.baseUrl}/order/${data.data.order._id}`, {
+      }, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+
+      //trả về option theo id
+      const getOptionByID = await axios.get(`${config.baseUrl}/option/${dataDetail.data.orderDetail.optionID}`, {}, {
+      });
+
+      //trả về user đang đăng nhập
+      const getUser = await axios.get(`${config.baseUrl}/user`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }, {});
+
+      //check điều kiện thực thi
+      if (data.data && dataDetail.data) {
+        navigation.navigate("Payment", { userName: getUser.data.user.name, total: updateOrder.data.order.total, optionName: getOptionByID.data.option.optionName })
+        return
+      } else {
+        console.error("data null or empty");
+      }
+    } catch (error) {
+      console.log(error);
+      // Xử lý lỗi
+      if (error.response && error.response.data) {
+        console.error(error.response.data);
+      }
+    }
   }
 
   const handleCleaningChange = (id) => {
     setSelectedCleaning(id);
   }
-
-  const handleServiceChange = (id) => {
-    setSelectedService(id);
+  const fetchOption = async (serviceID) => {
+    try {
+      const res = await axios.get(`${config.baseUrl}/service/${serviceID}`)
+      console.log(res.data);
+      setOptions(res.data.options);
+    } catch (error) {
+      console.error("Error loading option:", error);
+    }
+  };
+  const handleServiceChange = (serviceID) => {
+    setSelectedService(serviceID);
+    fetchOption(serviceID)
   }
 
-  const handleOptionChange = (id) => {
-    setSelectedOption(id);
+  const handleOptionChange = (optionID) => {
+    setSelectedOption(optionID);
   }
+
 
   return (
     <ScrollView>

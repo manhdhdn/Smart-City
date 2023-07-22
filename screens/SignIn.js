@@ -1,10 +1,13 @@
 import * as React from "react";
 import { TextInput, Text, StyleSheet, View, Pressable, ScrollView } from "react-native";
 import { Image } from "expo-image";
+import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
+import config from "../baseurl.json";
 
 const SignIn = ({ navigation }) => {
-    const [email, setEmail] = React.useState("");
+    const [username, setUserName] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [hidePassword, setHidePassword] = React.useState(true);
 
@@ -16,8 +19,37 @@ const SignIn = ({ navigation }) => {
         navigation.navigate("SignUp");
     }
 
-    const handleLogInPress = () => {
-        navigation.navigate("Account");
+    const handleLogInPress = async () => {
+        console.log("Login2");
+        try {
+            const data = await axios.post(`${config.baseUrl}/signIn`,
+            { 
+            username: username,
+            password: password
+          })
+          console.log(data.data);
+          await AsyncStorage.setItem("token", data.data.token)
+          await AsyncStorage.setItem("user",JSON.stringify({
+            id: data.data.user._id,
+            image: data.data.user.image,
+            email: data.data.user.email,
+            name: data.data.user.name,
+            role: data.data.user.role[0],
+            isLogin: true
+          }))
+          if(data.data.user.role[0] === "user") {
+            console.log("zo");   
+            navigation.goBack();
+            navigation.navigate("HomeStack")
+            return
+          }
+          } catch (error) {
+            console.log(error);
+            // Xử lý lỗi khi đăng nhập thất bại
+            if(error.response && error.response.data){
+              console.error(error.response.data);
+            }
+          }
     }
 
     const handleGoogleLoginPress = () => {
@@ -37,7 +69,7 @@ const SignIn = ({ navigation }) => {
                         <View style={styles.groupInnerShadowBox} />
                         <TextInput
                             style={styles.textTypo}
-                            onChangeText={setEmail}
+                            onChangeText={setUserName}
                             placeholder="smartcity@gmail.com"
                             keyboardType="email-address"
                         />

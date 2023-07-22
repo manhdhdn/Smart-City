@@ -9,7 +9,7 @@ const SelectedService = (props) => {
 
     props.services.forEach(service => {
       element.push(
-        <Pressable key={service.id} onPress={() => props.handleServiceChange(service.id)}>
+        <Pressable key={service._id} onPress={() => props.handleServiceChange(service._id)}>
           <View style={styles.service}>
             <View style={styles.iconEllipse}>
               {props.selectedService === service.id ? (
@@ -32,7 +32,7 @@ const SelectedService = (props) => {
               />
             </View>
             <Text style={styles.organizingTypo}>
-              {service.name}
+              {service.serviceName}
             </Text>
           </View>
         </Pressable>
