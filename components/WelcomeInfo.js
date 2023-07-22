@@ -81,24 +81,30 @@ const WelcomeInfo = () => {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      };
 
-      const upload = await axios.post(`http://${config.baseURL}:8089/api/upload`, formData, config);
+      };
+      try {
+        const upload = await axios.post(`http://${config.baseURL}:8089/api/upload`, formData, config);
       
-      console.log('Upload Response:', upload.data.filename);
-      const userData = await AsyncStorage.getItem("user");
-      const parsedDataUser = JSON.parse(userData);
-      const res = await axios.put(`http://${config.baseURL}:8089/api/user/${parsedDataUser.id}`,
-      {
-        name: parsedDataUser.name,
-        phone: parsedDataUser.phone,
-        email: parsedDataUser.email,
-        block: parsedDataUser.block,
-        room: parsedDataUser.room,
-        image: upload.data.filename,
+        console.log('Upload Response:', upload.data.filename);
+        const userData = await AsyncStorage.getItem("user");
+        const parsedDataUser = JSON.parse(userData);
+        const res = await axios.put(`http://${config.baseURL}:8089/api/user/${parsedDataUser.id}`,
+        {
+          name: parsedDataUser.name,
+          phone: parsedDataUser.phone,
+          email: parsedDataUser.email,
+          block: parsedDataUser.block,
+          room: parsedDataUser.room,
+          image: upload.data.filename,
+        }
+        );
+        console.log(res.data.image);
+      } catch (error) {
+        console.error("API error:", error);
+        
       }
-      );
-      console.log(res.data.image);
+
       loadDataOrder();
     }
     

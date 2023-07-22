@@ -117,6 +117,35 @@ const BottomTab = () => {
   )
 }
 
+const BottomTabStaff = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={{ tabBarActiveTintColor: Color.slateblue, headerShown: false }}
+    >
+      <Tab.Screen
+        name="ScheduleStack"
+        component={ScheduleStack}
+        options={{
+          tabBarLabel: "Schedule",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="calendar" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="AccountStack"
+        component={AccountStack}
+        options={{
+          tabBarLabel: "Account",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  )
+}
+
 const App = () => {
   const [isFirstRun, setFirstRun] = useState(null);
   const [fontsLoaded, error] = useFonts({
@@ -138,16 +167,19 @@ const App = () => {
     Montserrat_bold: require("./assets/fonts/Montserrat_bold.ttf"),
     Nunito_regular: require("./assets/fonts/Nunito_regular.ttf"),
   });
+  
 
   useEffect(() => {
-    AsyncStorage.getItem("isFirstRun").then((value) => {
-      if (value) {
+    const checkFirstRun = async () => {
+      const isFirstRunValue = await AsyncStorage.getItem("isFirstRun");
+      if (isFirstRunValue) {
         setFirstRun(false);
       } else {
         setFirstRun(true);
-        AsyncStorage.setItem("isFirstRun", "false");
+        await AsyncStorage.setItem("isFirstRun", "false");
       }
-    })
+    };
+    checkFirstRun();
   }, []);
 
   if ((!fontsLoaded && !error) || isFirstRun === null) {
@@ -157,8 +189,12 @@ const App = () => {
   return (
     <>
       <NavigationContainer>
-        {isFirstRun ? <SplashStack /> : <BottomTab />}
-      </NavigationContainer >
+        {isFirstRun ? (
+          <SplashStack />
+        ) :(
+          <BottomTab />
+        )}
+      </NavigationContainer>
     </>
   );
 };

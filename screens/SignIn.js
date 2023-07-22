@@ -40,6 +40,12 @@ const SignIn = ({ navigation, route  }) => {
             navigation.navigate("HomeStack")
             return
           }
+          if(data.data.user.role[0] === "staff") {
+            console.log("zo");   
+            navigation.goBack();
+            navigation.navigate("ScheduleStack")
+            return
+          }
           } catch (error) {
             console.log(error);
             // Xử lý lỗi khi đăng nhập thất bại

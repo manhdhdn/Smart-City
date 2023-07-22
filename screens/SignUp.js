@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Text, TextInput, StyleSheet, View, Pressable, ScrollView } from "react-native";
+import { Text, TextInput, StyleSheet, View, Pressable, ScrollView, TouchableOpacity } from "react-native";
 import { Image } from "expo-image";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 import axios from "axios";
+import config from "../baseUrl.json";
 
 const MIN_USERNAME_LENGTH = 4;
 const MAX_USERNAME_LENGTH = 20;
@@ -13,6 +14,7 @@ const SignUp = ({ navigation }) => {
   const [name, setName] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [role, setRole] = React.useState("user");
   const [hidePassword, setHidePassword] = React.useState(true);
 
   const handleUnhidePassword = () => {
@@ -23,28 +25,29 @@ const SignUp = ({ navigation }) => {
     navigation.navigate("SignIn");
   }
 
-  const handleRegisterPress = async() => {
+  const handleRegisterPress = async () => {
     if (username.length < MIN_USERNAME_LENGTH || username.length > MAX_USERNAME_LENGTH) {
       alert(`Username must be between ${MIN_USERNAME_LENGTH} and ${MAX_USERNAME_LENGTH} characters.`);
       return;
     }
-  
+
     if (password.length < MIN_PASSWORD_LENGTH || password.length > MAX_PASSWORD_LENGTH) {
       alert(`Password must be between ${MIN_PASSWORD_LENGTH} and ${MAX_PASSWORD_LENGTH} characters.`);
       return;
     }
     try {
       const data = await axios.post(`http://${config.baseURL}:8089/api/signUp`,
-      { 
-      name: name,
-      username: username,
-      password: password
-    })
-    console.log(data.data);
-    if(data.data.message) {
-      const successMessage = data.data.message;
-      navigation.navigate("SignIn",{ successMessage });
-    }
+        {
+          name: name,
+          username: username,
+          password: password,
+          role: [role],
+        })
+      console.log(data.data);
+      if (data.data.message) {
+        const successMessage = data.data.message;
+        navigation.navigate("SignIn", { successMessage });
+      }
     } catch (error) {
       console.log(error);
       if (error.response && error.response.data) {
@@ -61,11 +64,11 @@ const SignUp = ({ navigation }) => {
   }
 
   const handleGoogleRegisterPress = () => {
-    navigation.navigate("Account");
+    alert("Tính năng đang được cập nhật");
   }
 
   const handleFacebookRegisterPress = () => {
-    navigation.navigate("Account");
+    alert("Tính năng đang được cập nhật");
   }
 
   return (
@@ -99,7 +102,7 @@ const SignUp = ({ navigation }) => {
               <Image
                 style={[styles.eyeLightIcon, styles.parentPosition]}
                 contentFit="cover"
-              source={require("../assets/expand-down.png")}
+                source={require("../assets/expand-down.png")}
               />
             </Pressable>
           </View>
@@ -119,6 +122,20 @@ const SignUp = ({ navigation }) => {
                 source={require("../assets/eye-light1.png")}
               />
             </Pressable>
+            <View style={styles.roleContainer}>
+              <TouchableOpacity
+                style={[styles.roleOption, role === "user" && styles.activeRoleOption]}
+                onPress={() => setRole("user")}
+              >
+                <Text style={[styles.roleLabel, role === "user" && styles.activeRoleLabel]}>User</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.roleOption, role === "staff" && styles.activeRoleOption]}
+                onPress={() => setRole("staff")}
+              >
+                <Text style={[styles.roleLabel, role === "staff" && styles.activeRoleLabel]}>Staff</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <Pressable style={[styles.button, styles.buttonPosition]} onPress={handleRegisterPress}>
             <View style={styles.rectangle} />
@@ -164,8 +181,32 @@ const SignUp = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  name: {
-
+  roleContainer: {
+    height: 80,
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 40,
+    width: "100%", // Set the width to fill the container
+    justifyContent: "center", // Center the options horizontally
+  },
+  roleOption: {
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    marginRight: 10,
+  },
+  activeRoleOption: {
+    backgroundColor: "#81b0ff",
+    borderColor: "#81b0ff",
+  },
+  roleLabel: {
+    color: "#000",
+    fontSize: 16,
+  },
+  activeRoleLabel: {
+    color: "#fff",
   },
   buttonPosition: {
     width: 375,
@@ -319,7 +360,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   button: {
-    top: 363,
+    top: 390,
     height: 48,
     overflow: "hidden",
   },
@@ -347,7 +388,7 @@ const styles = StyleSheet.create({
   rectangleContainer: {
     top: 158,
   },
-  
+
   rectangleContainer1: {
     top: 271,
   },
