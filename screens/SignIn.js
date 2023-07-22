@@ -1,10 +1,19 @@
 import * as React from "react";
-import { TextInput, Text, StyleSheet, View, Pressable, ScrollView } from "react-native";
+import { TextInput, Text, StyleSheet, View, Pressable, ScrollView, Alert  } from "react-native";
 import { Image } from "expo-image";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import config from "../baseUrl.json";
 
-const SignIn = ({ navigation }) => {
-    const [email, setEmail] = React.useState("");
+const SignIn = ({ navigation, route  }) => {
+    React.useEffect(() => {
+        const { successMessage } = route.params || {};
+        if (successMessage) {
+          Alert.alert(successMessage);
+        }
+      }, [route.params]);
+    const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [hidePassword, setHidePassword] = React.useState(true);
 
@@ -16,8 +25,34 @@ const SignIn = ({ navigation }) => {
         navigation.navigate("SignUp");
     }
 
-    const handleLogInPress = () => {
-        navigation.navigate("Account");
+    const handleLogInPress = async () => {
+        try {
+            const data = await axios.post(`http://${config.baseURL}:8089/api/signIn`,
+            { 
+            username: username,
+            password: password
+          })
+          console.log(data.data);
+          await AsyncStorage.setItem("token", data.data.token)
+          if(data.data.user.role[0] === "user") {
+            console.log("zo");   
+            navigation.goBack();
+            navigation.navigate("HomeStack")
+            return
+          }
+          if(data.data.user.role[0] === "staff") {
+            console.log("zo");   
+            navigation.goBack();
+            navigation.navigate("ScheduleStack")
+            return
+          }
+          } catch (error) {
+            console.log(error);
+            // Xử lý lỗi khi đăng nhập thất bại
+            if(error.response && error.response.data){
+              console.error(error.response.data);
+            }
+          }
     }
 
     const handleGoogleLoginPress = () => {
@@ -32,12 +67,12 @@ const SignIn = ({ navigation }) => {
         <ScrollView>
             <View style={styles.signin}>
                 <View style={[styles.content, styles.buttonPosition]}>
-                    <Text style={[styles.email, styles.emailTypo]}>Email</Text>
+                    <Text style={[styles.email, styles.emailTypo]}>Username</Text>
                     <View style={[styles.groupView, styles.groupLayout]}>
                         <View style={styles.groupInnerShadowBox} />
                         <TextInput
                             style={styles.textTypo}
-                            onChangeText={setEmail}
+                            onChangeText={setUsername}
                             placeholder="smartcity@gmail.com"
                             keyboardType="email-address"
                         />

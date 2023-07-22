@@ -13,6 +13,7 @@ import Schedule from "./screens/Schedule";
 import NextSplash from "./screens/NextSplash";
 import SignUp from "./screens/SignUp";
 import SignIn from "./screens/SignIn";
+import Info from "./screens/Infomation";
 import PaymentMethod from "./screens/Payment";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -61,6 +62,7 @@ const ScheduleStack = () => {
 }
 
 const AccountStack = () => {
+
   return (
     <Stack.Navigator
       initialRouteName="Account"
@@ -71,6 +73,7 @@ const AccountStack = () => {
       <Stack.Screen name="Schedule" component={Schedule} />
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="Infomation" component={Info} />
     </Stack.Navigator>
   )
 }
@@ -90,6 +93,35 @@ const BottomTab = () => {
           ),
         }}
       />
+      <Tab.Screen
+        name="ScheduleStack"
+        component={ScheduleStack}
+        options={{
+          tabBarLabel: "Schedule",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="calendar" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="AccountStack"
+        component={AccountStack}
+        options={{
+          tabBarLabel: "Account",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  )
+}
+
+const BottomTabStaff = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={{ tabBarActiveTintColor: Color.slateblue, headerShown: false }}
+    >
       <Tab.Screen
         name="ScheduleStack"
         component={ScheduleStack}
@@ -135,16 +167,19 @@ const App = () => {
     Montserrat_bold: require("./assets/fonts/Montserrat_bold.ttf"),
     Nunito_regular: require("./assets/fonts/Nunito_regular.ttf"),
   });
+  
 
   useEffect(() => {
-    AsyncStorage.getItem("isFirstRun").then((value) => {
-      if (value) {
+    const checkFirstRun = async () => {
+      const isFirstRunValue = await AsyncStorage.getItem("isFirstRun");
+      if (isFirstRunValue) {
         setFirstRun(false);
       } else {
         setFirstRun(true);
-        AsyncStorage.setItem("isFirstRun", "false");
+        await AsyncStorage.setItem("isFirstRun", "false");
       }
-    })
+    };
+    checkFirstRun();
   }, []);
 
   if ((!fontsLoaded && !error) || isFirstRun === null) {
@@ -154,8 +189,12 @@ const App = () => {
   return (
     <>
       <NavigationContainer>
-        {isFirstRun ? <SplashStack /> : <BottomTab />}
-      </NavigationContainer >
+        {isFirstRun ? (
+          <SplashStack />
+        ) :(
+          <BottomTab />
+        )}
+      </NavigationContainer>
     </>
   );
 };
