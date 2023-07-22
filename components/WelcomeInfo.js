@@ -76,15 +76,15 @@ const WelcomeInfo = () => {
         type: 'image/jpeg', // Change the type accordingly if it's not JPEG
         name: 'image.jpg', // Provide a name for the image
       });
-
-      const config = {
+      console.log(formData);
+      const configImage = {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
 
       };
       try {
-        const upload = await axios.post(`http://${config.baseURL}:8089/api/upload`, formData, config);
+        const upload = await axios.post(`http://${config.baseURL}:8089/api/upload`, formData, configImage);
       
         console.log('Upload Response:', upload.data.filename);
         const userData = await AsyncStorage.getItem("user");
